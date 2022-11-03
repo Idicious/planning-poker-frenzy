@@ -1,0 +1,36 @@
+@startuml "planning model"
+class User {
+    user_id: string
+    username: sting
+    email: string
+    created_at: datatime
+    origin: string
+}
+
+class Session {
+    session_id: string
+    host_id: string
+    created_at: datetime
+}
+
+class Poll {
+    poll_id: string
+    session_id: string
+    votes_visible: boolean
+    description: string
+    created_at: datetime
+}
+
+class Vote {
+    vote_id: string
+    user_id: string
+    poll_id: string
+    created_at: DateTime
+}
+
+User "1" <-- "0:n" Session
+Session "1" <-- "0:n" Poll
+Poll "1" <-- "0:n" Vote 
+Vote "0.n" --> "1" User
+
+@enduml
