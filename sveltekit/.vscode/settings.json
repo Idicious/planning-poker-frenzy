@@ -1,3 +1,4 @@
 {
-	"editor.defaultFormatter": "svelte.svelte-vscode"
+	"editor.defaultFormatter": "svelte.svelte-vscode",
+	"css.lint.unknownAtRules": "ignore"
 }
