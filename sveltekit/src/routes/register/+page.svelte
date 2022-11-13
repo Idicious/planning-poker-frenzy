@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { supabase } from '$lib/supabase';
+	import { supabaseClient } from '$lib/db';
 	import { goto } from '$app/navigation';
 
 	export let email = '';
@@ -15,7 +15,7 @@
 	export let authError = false;
 
 	async function handleRegistration() {
-		const { error } = await supabase.auth.signUp({ email, password });
+		const { error } = await supabaseClient.auth.signUp({ email, password });
 
 		if (error) {
 			authError = true;

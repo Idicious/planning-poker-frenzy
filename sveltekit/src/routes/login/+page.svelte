@@ -1,13 +1,26 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { supabase } from '$lib/supabase';
+	import { supabaseClient } from '$lib/db';
+	import { env } from '$env/dynamic/public';
+	import Layout from '../+layout.svelte';
 
 	export let email = '';
 	export let password = '';
 	export let authError = false;
 
 	async function handleLogin() {
-		const { error } = await supabase.auth.signInWithPassword({ email, password });
+		const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+		if (error) {
+			authError = true;
+			return;
+		}
+
+		await goto('/');
+	}
+
+	async function handleGithub() {
+		const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'github' });
 
 		if (error) {
 			authError = true;
@@ -27,6 +40,7 @@
 {/if}
 
 <div class="container rounded-md shadow-md br-2">
+	<button type="button" on:click={handleGithub}>Github</button>
 	<form on:submit|preventDefault={handleLogin}>
 		<label class="block" for="email">Email</label>
 		<input

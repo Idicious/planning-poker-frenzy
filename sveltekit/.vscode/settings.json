@@ -1,4 +1,7 @@
 {
 	"editor.defaultFormatter": "svelte.svelte-vscode",
-	"css.lint.unknownAtRules": "ignore"
+	"css.lint.unknownAtRules": "ignore",
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	}
 }

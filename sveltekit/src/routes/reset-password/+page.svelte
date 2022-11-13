@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { supabase } from '$lib/supabase';
+	import { supabaseClient } from '$lib/db';
 	import { goto } from '$app/navigation';
 
 	export let password = '';
@@ -11,14 +11,14 @@
 	$: formValid = passwordMatch && passwordValid;
 
 	async function handleReset() {
-		const { error } = await supabase.auth.updateUser({ password });
+		const { error } = await supabaseClient.auth.updateUser({ password });
 
 		if (error) {
 			authError = true;
 			return;
 		}
 
-		await supabase.auth.signOut();
+		await supabaseClient.auth.signOut();
 		await goto('/login');
 	}
 </script>

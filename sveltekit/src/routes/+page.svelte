@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { user } from '$lib/stores/user';
+	import { page } from '$app/stores';
 </script>
 
 <h1>Welcome to SvelteKit</h1>
 
-{#if $user}
-	<p>Logged in as {$user.email}</p>
+{#if $page.data.session}
+	<p>Logged in as {$page.data.session.user.email}</p>
 {/if}
 
 <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
