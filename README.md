@@ -8,6 +8,15 @@ Playground to test different frontend frameworks.
 - [SvelteKit](https://kit.svelte.dev/)
 - [Astro](https://astro.build/)
 
+Extra options
+
+- [Fresh](https://fresh.deno.dev/)
+- [SolidStart](https://start.solidjs.com/getting-started/what-is-solidstart)
+
+## Package management
+
+Want to try [pnpm](https://pnpm.io/)
+
 ## Styling
 
 [Tailwind](https://tailwindcss.com/) should be used for most styling.
@@ -88,6 +97,8 @@ Start new poll with for example a story name
 - [ ] magic link
 
 ## Deployment
+
+CDN's are getting support for deploying functions. Want to tryout the 3 popular options:
 
 - [ ] Vercel
   - <https://vercel.com/docs/concepts/monorepos>
