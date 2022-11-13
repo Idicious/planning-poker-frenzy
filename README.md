@@ -13,9 +13,31 @@ Extra options
 - [Fresh](https://fresh.deno.dev/)
 - [SolidStart](https://start.solidjs.com/getting-started/what-is-solidstart)
 
-## Package management
+## CI/CD
 
-Want to try [pnpm](https://pnpm.io/)
+### Package management
+
+Want to try [pnpm](https://pnpm.io/), if possible the workspace feature
+
+### CI
+
+[GitHub Actions](https://docs.github.com/en/actions)
+
+### Deployment
+
+CDN's are getting support for deploying functions. Want to tryout the 3 popular options:
+
+- [ ] Vercel
+  - <https://vercel.com/docs/concepts/monorepos>
+  - <https://vercel.com/blog/monorepos>
+  - max 3 deployables and project from same git repo
+    - [nextjs t3](https://vercel.com/guides/deploying-nextjs-with-vercel)
+    - [svelte](https://vercel.com/guides/deploying-svelte-with-vercel)
+- [ ] cloudflare
+  - [qwik](https://developers.cloudflare.com/pages/framework-guides/deploy-a-qwik-site/)
+  - [astro](https://developers.cloudflare.com/pages/framework-guides/astro/)
+- [ ] flyio
+  - [remix](https://fly.io/docs/languages-and-frameworks/remix/)
 
 ## Styling
 
@@ -36,7 +58,7 @@ The apps should use [Supabase](https://supabase.com/) to store data and have rea
 - [ ]  should we use nosql model?
 - [ ]  define event model?
 
-## UX
+## UI
 
 ### Login Page
 
@@ -95,19 +117,3 @@ Start new poll with for example a story name
 - [ ] github
 - [ ] google
 - [ ] magic link
-
-## Deployment
-
-CDN's are getting support for deploying functions. Want to tryout the 3 popular options:
-
-- [ ] Vercel
-  - <https://vercel.com/docs/concepts/monorepos>
-  - <https://vercel.com/blog/monorepos>
-  - max 3 deployables and project from same git repo
-    - [nextjs t3](https://vercel.com/guides/deploying-nextjs-with-vercel)
-    - [svelte](https://vercel.com/guides/deploying-svelte-with-vercel)
-- [ ] cloudflare
-  - [qwik](https://developers.cloudflare.com/pages/framework-guides/deploy-a-qwik-site/)
-  - [astro](https://developers.cloudflare.com/pages/framework-guides/astro/)
-- [ ] flyio
-  - [remix](https://fly.io/docs/languages-and-frameworks/remix/)
