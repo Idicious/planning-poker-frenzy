@@ -13,6 +13,11 @@ class Session {
     created_at: datetime
 }
 
+class UserSession {
+    user_id: string
+    session_id: string
+}
+
 class Poll {
     poll_id: string
     session_id: string
@@ -25,9 +30,12 @@ class Vote {
     vote_id: string
     user_id: string
     poll_id: string
+    value: number
     created_at: DateTime
 }
 
+User "1" <-- "0:n" UserSession
+Session "1" <-- "0:n" UserSession
 User "1" <-- "0:n" Session
 Session "1" <-- "0:n" Poll
 Poll "1" <-- "0:n" Vote 
