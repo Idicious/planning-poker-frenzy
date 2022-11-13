@@ -5,6 +5,7 @@ Playground to test different frontend frameworks.
 - [QwikCity](https://qwik.builder.io/qwikcity/overview/)
 - [NextJS 13 with T3](https://github.com/t3-oss/create-t3-app)
 - [Remix](https://remix.run/)
+  - [Flyio preview](https://planning-pocker-frenzy-remix.fly.dev/)
 - [SvelteKit](https://kit.svelte.dev/)
 - [Astro](https://astro.build/)
 
