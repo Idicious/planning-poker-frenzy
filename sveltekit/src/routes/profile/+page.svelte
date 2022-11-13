@@ -17,7 +17,6 @@
 	const getProfile = async () => {
 		try {
 			loading = true;
-			const user = $page.data.session?.user;
 
 			const { data, error, status } = await supabaseClient
 				.from('profiles')
@@ -44,7 +43,6 @@
 	async function updateProfile() {
 		try {
 			loading = true;
-			const user = $page.data.session?.user;
 
 			const updates = {
 				id: user?.id,
