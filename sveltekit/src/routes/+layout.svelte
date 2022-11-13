@@ -2,7 +2,7 @@
 	import '../app.css';
 
 	import { supabaseClient } from '$lib/db';
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 
@@ -22,6 +22,8 @@
 		if (error) {
 			console.error(error);
 		}
+
+		goto('/login');
 	}
 </script>
 

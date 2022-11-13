@@ -1,74 +1,19 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { supabaseClient } from '$lib/db';
+	import { profile } from '$lib/stores/profile';
 	import { page } from '$app/stores';
 
-	let loading = false;
-	let username: string | null = null;
-	let website: string | null = null;
-	let avatarUrl: string | null = null;
+	$: data = $profile.data;
+	$: username = data?.username ?? '';
+	$: website = data?.website ?? '';
+	$: loading = $profile.loading ?? '';
 
-	$: user = $page.data.session?.user;
-
-	onMount(() => {
-		getProfile();
-	});
-
-	const getProfile = async () => {
-		try {
-			loading = true;
-
-			const { data, error, status } = await supabaseClient
-				.from('profiles')
-				.select(`username, website, avatar_url`)
-				.eq('id', user?.id)
-				.single();
-
-			if (data) {
-				username = data.username;
-				website = data.website;
-				avatarUrl = data.avatar_url;
-			}
-
-			if (error && status !== 406) throw error;
-		} catch (error) {
-			if (error instanceof Error) {
-				alert(error.message);
-			}
-		} finally {
-			loading = false;
-		}
-	};
-
-	async function updateProfile() {
-		try {
-			loading = true;
-
-			const updates = {
-				id: user?.id,
-				username,
-				website,
-				avatar_url: avatarUrl,
-				updated_at: new Date()
-			};
-
-			let { error } = await supabaseClient.from('profiles').upsert(updates);
-
-			if (error) throw error;
-		} catch (error) {
-			if (error instanceof Error) {
-				alert(error.message);
-			}
-		} finally {
-			loading = false;
-		}
-	}
+	async function updateProfile() {}
 </script>
 
 <form class="form-widget" on:submit|preventDefault={updateProfile}>
 	<div>
 		<label for="email">Email</label>
-		<input id="email" type="text" value={user?.email} disabled />
+		<input id="email" type="text" value={$page.data.session?.user.email} disabled />
 	</div>
 	<div>
 		<label for="username">Name</label>
@@ -83,7 +28,7 @@
 		<input
 			type="submit"
 			class="button block primary"
-			value={loading ? 'Loading...' : 'Update'}
+			value={$profile.loading ? 'Loading...' : 'Update'}
 			disabled={loading}
 		/>
 	</div>
