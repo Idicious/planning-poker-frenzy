@@ -1,7 +1,7 @@
 export default function Index() {
   return (
-    <main>
-      <h1 className="text-3xl font-bold underline">Welcome to Remix</h1>
+    <main className="font-sans leading-5 m-4">
+      <h1 className="text-3xl font-bold text-teal-600">Welcome to Remix</h1>
       <ul>
         <li>
           <a
