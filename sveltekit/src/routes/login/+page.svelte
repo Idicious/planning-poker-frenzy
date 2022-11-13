@@ -4,11 +4,10 @@
 	import { supabaseClient } from '$lib/db';
 
 	export let email = '';
-	export let password = '';
 	export let authError = false;
 
 	async function handleLogin() {
-		const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+		const { error } = await supabaseClient.auth.signInWithOtp({ email });
 
 		if (error) {
 			authError = true;
@@ -51,16 +50,6 @@
 					name="email"
 					id="email"
 					bind:value={email}
-				/>
-
-				<label class="hidden" for="password">Password</label>
-				<input
-					class="block border-solid px-3 py-2 rounded border-2 border-black min-w-full mb-3"
-					placeholder="Password"
-					type="password"
-					name="password"
-					id="password"
-					bind:value={password}
 				/>
 				<div class="flex">
 					<Button text="Login" type="submit" />
