@@ -36,6 +36,7 @@
 	"type": "module",
 	"dependencies": {
 		"@supabase/auth-helpers-sveltekit": "^0.8.6",
+		"@supabase/realtime-js": "^2.1.0",
 		"@supabase/supabase-js": "^2.1.0"
 	}
 }
