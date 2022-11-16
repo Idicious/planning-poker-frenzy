@@ -7,6 +7,9 @@
 	const userStore = createOnlineUsersStore($page.params.id, $page.data.session?.user.email);
 	const isHostStore = createIsHostStore(userStore);
 
+	$: users = $userStore;
+	$: allVoted = users.every((user) => user.vote != null);
+
 	let vote: number | null = null;
 
 	function submitVote() {
@@ -28,7 +31,7 @@
 {/if}
 
 <ul>
-	{#each $userStore as { email, vote }}
-		<li>{email}: {vote}</li>
+	{#each users as { email, vote }}
+		<li class:border-green-500={vote != null}>{allVoted ? `${email}: ${vote}` : email}</li>
 	{/each}
 </ul>

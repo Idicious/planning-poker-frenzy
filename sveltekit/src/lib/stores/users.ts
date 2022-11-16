@@ -31,8 +31,6 @@ export function createOnlineUsersStore(roomId?: string, email?: string) {
 
 	channel.on('presence', { event: 'sync' }, () => {
 		const presenceState = channel.presenceState();
-		console.info('Online users: ', presenceState);
-
 		const userList = Object.entries(presenceState).map(
 			([email, [state]]) => ({ ...state, email } as Presence)
 		);
@@ -41,15 +39,14 @@ export function createOnlineUsersStore(roomId?: string, email?: string) {
 	});
 
 	console.info(`Subscribing to online users for room ${roomId}`);
-	channel.subscribe(async (status, err) => {
+	channel.subscribe((status, err) => {
 		if (status === 'CHANNEL_ERROR') {
 			console.error('error subscribing to channel', err);
 		}
 
 		if (status === 'SUBSCRIBED') {
-			unsubscribe = voteStore.subscribe(async (vote) => {
-				const status = await channel.track({ vote });
-				console.info('tracking with status', status);
+			unsubscribe = voteStore.subscribe((vote) => {
+				channel.track({ vote });
 			});
 		}
 	});
