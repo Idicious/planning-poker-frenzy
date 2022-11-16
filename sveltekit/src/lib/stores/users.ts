@@ -47,6 +47,10 @@ export function createOnlineUsersStore(roomId?: string, email?: string) {
 		if (status === 'CHANNEL_ERROR') {
 			console.log(err);
 		}
+		if (status === 'SUBSCRIBED') {
+			const status = await channel.track({ vote: null });
+			console.log(status);
+		}
 	});
 
 	return {
