@@ -1,9 +1,10 @@
 import { supabaseClient } from '$lib/db';
 import { page } from '$app/stores';
 import { browser } from '$app/environment';
-import { derived, readable, writable, type Readable } from 'svelte/store';
+import { voteStore } from './vote';
+import { derived, readable, writable, type Readable, type Unsubscriber } from 'svelte/store';
 
-type Presence = { presence_ref: string };
+type Presence = { email: string; vote?: number | null };
 
 export function createOnlineUsersStore(roomId?: string, email?: string) {
 	if (!browser || roomId == null || email == null) return readable<Presence[]>([]);
@@ -19,37 +20,37 @@ export function createOnlineUsersStore(roomId?: string, email?: string) {
 		}
 	});
 
-	const { subscribe, update } = writable<Presence[]>([], () => {
+	let unsubscribe: Unsubscriber;
+	const { subscribe, set } = writable<Presence[]>([], () => {
 		return () => {
-			console.log(`Unsubscribing from online users for room ${roomId}`);
+			console.info(`Unsubscribing from online users for room ${roomId}`);
+			if (unsubscribe) unsubscribe();
 			return channel.unsubscribe();
 		};
 	});
 
 	channel.on('presence', { event: 'sync' }, () => {
-		console.log('Online users: ', channel.presenceState());
-	});
+		const presenceState = channel.presenceState();
+		console.info('Online users: ', presenceState);
 
-	channel.on('presence', { event: 'join' }, ({ newPresences }) => {
-		console.log('New users have joined: ', newPresences);
-		update((users) => [...users, ...newPresences]);
-	});
-
-	channel.on('presence', { event: 'leave' }, ({ leftPresences }) => {
-		console.log('Users have left: ', leftPresences);
-		update((users) =>
-			users.filter((user) => !leftPresences.some((left) => left.presence_ref === user.presence_ref))
+		const userList = Object.entries(presenceState).map(
+			([email, [state]]) => ({ ...state, email } as Presence)
 		);
+
+		set(userList);
 	});
 
-	console.log(`Subscribing to online users for room ${roomId}`);
+	console.info(`Subscribing to online users for room ${roomId}`);
 	channel.subscribe(async (status, err) => {
 		if (status === 'CHANNEL_ERROR') {
-			console.log(err);
+			console.error('error subscribing to channel', err);
 		}
+
 		if (status === 'SUBSCRIBED') {
-			const status = await channel.track({ vote: null });
-			console.log(status);
+			unsubscribe = voteStore.subscribe(async (vote) => {
+				const status = await channel.track({ vote });
+				console.info('tracking with status', status);
+			});
 		}
 	});
 
@@ -62,6 +63,6 @@ export function createIsHostStore(users: Readable<Presence[]>) {
 	return derived([users, page], ([$users, $page]) => {
 		if ($page.data.session == null) return false;
 
-		return $users.at(0) === $page.data.session.user.email;
+		return $users.at(0)?.email === $page.data.session.user.email;
 	});
 }
