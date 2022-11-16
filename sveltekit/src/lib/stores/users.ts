@@ -12,6 +12,9 @@ export function createOnlineUsersStore(roomId?: string, email?: string) {
 		config: {
 			presence: {
 				key: email
+			},
+			broadcast: {
+				self: true
 			}
 		}
 	});
