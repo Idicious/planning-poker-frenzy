@@ -20,11 +20,11 @@
 
 <h1>Active users</h1>
 
-<input type="number" placeholder="Your vote" bind:value={vote} />
+<input class="block" type="number" placeholder="Your vote" bind:value={vote} />
 <Button on:click={submitVote}>Submit vote</Button>
 
 {#if $isHostStore}
-	<strong>You are host</strong>
+	<p><strong>You are host</strong></p>
 {/if}
 
 <ul>

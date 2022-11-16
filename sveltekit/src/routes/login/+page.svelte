@@ -37,7 +37,10 @@
 	<div class="w-screen md:max-w-xl shadow-lg p-3 mt-3">
 		<section class="flex flex-col items-center mb-6">
 			<h2 class="text-2xl text-center">Social logins</h2>
-			<Button on:click={handleGithub} icon="github" text="Sign in with Github" fullWidth />
+			<Button on:click={handleGithub} fullWidth>
+				<i class="fa fa-github mr-3" />
+				Sign in with Github
+			</Button>
 		</section>
 
 		<section class="flex flex-col justify-center">
@@ -52,7 +55,7 @@
 					bind:value={email}
 				/>
 				<div class="flex">
-					<Button text="Login" type="submit" />
+					<Button type="submit">Login</Button>
 					<a class="ml-1 underline" href="/register">Register</a>
 					{#if authError}
 						<div class="text-red-600 ml-3">Something went wrong</div>
