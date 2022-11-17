@@ -22,10 +22,10 @@ export function createOnlineUsersStore(roomId?: string, email?: string) {
 
 	let unsubscribe: Unsubscriber;
 	const { subscribe, set } = writable<Presence[]>([], () => {
-		return () => {
+		return async () => {
 			console.info(`Unsubscribing from online users for room ${roomId}`);
 			if (unsubscribe) unsubscribe();
-			return channel.unsubscribe();
+			await channel.unsubscribe();
 		};
 	});
 

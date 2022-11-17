@@ -1,11 +1,5 @@
 <script lang="ts">
-	import { profile } from '$lib/stores/profile';
 	import { page } from '$app/stores';
-
-	$: data = $profile.data;
-	$: username = data?.username ?? '';
-	$: website = data?.website ?? '';
-	$: loading = $profile.loading ?? '';
 
 	async function updateProfile() {}
 </script>
@@ -17,19 +11,14 @@
 	</div>
 	<div>
 		<label for="username">Name</label>
-		<input id="username" type="text" bind:value={username} />
+		<input id="username" type="text" />
 	</div>
 	<div>
 		<label for="website">Website</label>
-		<input id="website" type="website" bind:value={website} />
+		<input id="website" type="website" />
 	</div>
 
 	<div>
-		<input
-			type="submit"
-			class="button block primary"
-			value={$profile.loading ? 'Loading...' : 'Update'}
-			disabled={loading}
-		/>
+		<input type="submit" class="button block primary" value={'Update'} />
 	</div>
 </form>
