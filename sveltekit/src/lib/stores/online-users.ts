@@ -1,6 +1,6 @@
 import { supabaseClient } from '$lib/db';
 import type { RealtimeChannel } from '@supabase/supabase-js';
-import { derived, writable, type Writable } from 'svelte/store';
+import { derived, get, writable, type Writable } from 'svelte/store';
 import { voteStore } from './vote';
 
 interface OnlineUser {
@@ -34,6 +34,8 @@ function createOnlineUsersStore() {
 
 		console.info(`Subscribing to online users for room ${room}`);
 		channel = await createChannelForRoom(room, email, store);
+
+		channel.track({ vote: get(voteStore) });
 	}
 
 	async function leave() {
