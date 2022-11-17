@@ -43,7 +43,9 @@ function createOnlineUsersStore() {
 		if (channel) await channel.unsubscribe();
 
 		channel = null;
+
 		store.set(initialState);
+		voteStore.set(null);
 	}
 
 	return {
