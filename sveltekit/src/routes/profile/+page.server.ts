@@ -9,10 +9,10 @@ export const actions: Actions = {
 		const parsed = ProfileDTOSchema.safeParse(dataObject);
 
 		if (!parsed.success) {
-			const res = { success: false, errors: parsed.error.flatten() } as const;
+			const res = { success: false, data: dataObject, errors: parsed.error.flatten() } as const;
 			return invalid(400, res);
 		}
 
-		return { success: true } as const;
+		return { success: true, data: dataObject } as const;
 	}
 };
