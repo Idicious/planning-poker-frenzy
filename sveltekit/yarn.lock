@@ -32,6 +32,25 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@felte/common@1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@felte/common/-/common-1.1.3.tgz#844414ec6c83f1e5f34210eb0a5e57efb75aff6b"
+  integrity sha512-47OJYohloUT9FOgXRxEIaSkaveDB70/eRv3+6MfYDZbc44XfojHJLiUOz3uSWRwfl8f2wonhkhIPCYkzIUltTg==
+
+"@felte/core@1.3.6":
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/@felte/core/-/core-1.3.6.tgz#2fecc2cde097e6406cb91ea7d20dcba276464501"
+  integrity sha512-/V1WG+YTz7gfbvQYeBazMSgaCA5qnNRJy+HP6jtdvi2f5Xm/iwVxZXoZZU5/Da5CmT0rYdkCDcHQe9IG0iTV1Q==
+  dependencies:
+    "@felte/common" "1.1.3"
+
+"@felte/validator-zod@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@felte/validator-zod/-/validator-zod-1.0.12.tgz#d5e0e5b04facc90fcff0917b14dde888d39dd653"
+  integrity sha512-tYC0jDJb7YGwDjIjzq4Dn2GXjhufIklspOCGkfTy167R+ON7N7/A7eSumvWv/MSG4332bxz2BYkL9VAHMVC7Mw==
+  dependencies:
+    "@felte/common" "1.1.3"
+
 "@humanwhocodes/config-array@^0.11.6":
   version "0.11.7"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.7.tgz#38aec044c6c828f6ed51d5d7ae3d9b9faf6dbb0f"
@@ -1101,6 +1120,13 @@ fastq@^1.6.0:
   integrity sha512-YpkpUnK8od0o1hmeSc7UUs/eB/vIPWJYjKck2QKIzAf71Vm1AAQ3EbuZB3g2JIy+pg+ERD0vqI79KyZiB2e2Nw==
   dependencies:
     reusify "^1.0.4"
+
+felte@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/felte/-/felte-1.2.6.tgz#2bb49ce539b4aefdd81ef48bd074cce8ae708dd7"
+  integrity sha512-0dcDPVkA09vkXFm+hiOFanWGGH1hwjqWDul02nRVjkMe4dtf6FxtyV8JSFY2Rxcq7rCoaYkn1Dv8oeRDRdVPsw==
+  dependencies:
+    "@felte/core" "1.3.6"
 
 file-entry-cache@^6.0.1:
   version "6.0.1"
@@ -2284,3 +2310,8 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zod@^3.19.1:
+  version "3.19.1"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.19.1.tgz#112f074a97b50bfc4772d4ad1576814bd8ac4473"
+  integrity sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==

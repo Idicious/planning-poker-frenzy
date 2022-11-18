@@ -38,7 +38,10 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@felte/validator-zod": "^1.0.12",
 		"@supabase/auth-helpers-sveltekit": "^0.8.6",
-		"@supabase/supabase-js": "^2.1.0"
+		"@supabase/supabase-js": "^2.1.0",
+		"felte": "^1.2.6",
+		"zod": "^3.19.1"
 	}
 }

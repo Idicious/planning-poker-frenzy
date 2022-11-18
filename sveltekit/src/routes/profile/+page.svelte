@@ -1,24 +1,42 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { ProfileDTOSchema, type ProfileDTO } from '$lib/schemas/profile';
+	import { validator } from '@felte/validator-zod';
+	import { createForm } from 'felte';
+	import type { ActionData, PageData } from './$types';
 
-	async function updateProfile() {}
+	export let data: PageData;
+
+	const { form, errors, touched } = createForm<ProfileDTO>({
+		extend: validator({ schema: ProfileDTOSchema }),
+		onError: (err) => {
+			const actionData = err as ActionData;
+			return actionData?.errors?.fieldErrors;
+		}
+	});
 </script>
 
-<form class="form-widget" on:submit|preventDefault={updateProfile}>
+<form method="POST" class="form-widget" use:form>
 	<div>
 		<label for="email">Email</label>
-		<input id="email" type="text" value={$page.data.session?.user.email} disabled />
+		<span name="email">{$page.data.session?.user.email}</span>
 	</div>
 	<div>
 		<label for="username">Name</label>
-		<input id="username" type="text" />
+		<input name="username" type="text" value={data?.username} />
+		{#if $touched.username && $errors.username}
+			<p class="error">{$errors.username[0]}</p>
+		{/if}
 	</div>
 	<div>
 		<label for="website">Website</label>
-		<input id="website" type="website" />
+		<input name="website" type="website" value={data?.website} />
+		{#if $touched.website && $errors.website}
+			<p class="error">{$errors.website[0]}</p>
+		{/if}
 	</div>
 
 	<div>
-		<input type="submit" class="button block primary" value={'Update'} />
+		<button type="submit" class="button block primary">Update</button>
 	</div>
 </form>
