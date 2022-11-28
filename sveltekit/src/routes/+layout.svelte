@@ -41,4 +41,8 @@
 	</nav>
 </header>
 
-<slot />
+<main class="flex justify-center">
+	<div class="w-full md:max-w-4xl flex-">
+		<slot />
+	</div>
+</main>

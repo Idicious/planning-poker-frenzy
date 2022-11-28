@@ -33,35 +33,33 @@
 	<title>Login</title>
 </svelte:head>
 
-<div class="flex justify-center">
-	<div class="w-screen md:max-w-xl shadow-lg p-3 mt-3">
-		<section class="flex flex-col items-center mb-6">
-			<h2 class="text-2xl text-center">Social logins</h2>
-			<Button on:click={handleGithub} fullWidth>
-				<i class="fa fa-github mr-3" />
-				Sign in with Github
-			</Button>
-		</section>
+<div class="shadow-lg p-3 mt-3">
+	<section class="flex flex-col items-center mb-6">
+		<h2 class="text-2xl text-center">Social logins</h2>
+		<Button on:click={handleGithub} fullWidth>
+			<i class="fa fa-github mr-3" />
+			Sign in with Github
+		</Button>
+	</section>
 
-		<section class="flex flex-col justify-center">
-			<h2 class="text-2xl text-center">Email</h2>
-			<form on:submit|preventDefault={handleLogin}>
-				<input
-					class="block border-solid px-3 py-2 rounded border-2 border-black min-w-full mb-3"
-					type="email"
-					placeholder="Email"
-					name="email"
-					id="email"
-					bind:value={email}
-				/>
-				<div class="flex">
-					<Button type="submit">Login</Button>
-					<a class="ml-1 underline" href="/register">Register</a>
-					{#if authError}
-						<div class="text-red-600 ml-3">Something went wrong</div>
-					{/if}
-				</div>
-			</form>
-		</section>
-	</div>
+	<section class="flex flex-col justify-center">
+		<h2 class="text-2xl text-center">Email</h2>
+		<form on:submit|preventDefault={handleLogin}>
+			<input
+				class="block border-solid px-3 py-2 rounded border-2 border-black min-w-full mb-3"
+				type="email"
+				placeholder="Email"
+				name="email"
+				id="email"
+				bind:value={email}
+			/>
+			<div class="flex">
+				<Button type="submit">Login</Button>
+				<a class="ml-1 underline" href="/register">Register</a>
+				{#if authError}
+					<div class="text-red-600 ml-3">Something went wrong</div>
+				{/if}
+			</div>
+		</form>
+	</section>
 </div>

@@ -2,7 +2,9 @@
 	import { page } from '$app/stores';
 </script>
 
-<h1>Welcome to SvelteKit</h1>
+<svelte:head>
+	<title>Home</title>
+</svelte:head>
 
 {#if $page.data.session}
 	<p>Logged in as {$page.data.session.user.email}</p>

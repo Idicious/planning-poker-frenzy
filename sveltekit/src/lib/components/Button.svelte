@@ -8,7 +8,7 @@
 	on:click
 	{type}
 	{disabled}
-	class="px-6 py-2 rounded-md font-medium text-lg hover:outline outline-black bg-blue-500"
+	class="px-6 py-2 rounded-md font-medium text-lg hover:outline outline-black bg-blue-500 text-white"
 	class:w-full={fullWidth}
 >
 	<slot />
