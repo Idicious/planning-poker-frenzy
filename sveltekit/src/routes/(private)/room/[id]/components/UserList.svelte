@@ -1,10 +1,14 @@
 <script lang="ts">
-	import { onlineUsers, allVoted } from '$lib/stores/online-users';
+	import type { OnlineUser } from '$lib/stores/online-users';
+	import UserIcon from './UserIcon.svelte';
+
+	export let users: OnlineUser[];
 </script>
 
-<h1>Online users</h1>
-<ul>
-	{#each $onlineUsers.users as { email, vote }}
-		<li class:border-green-500={vote != null}>{$allVoted ? `${email}: ${vote}` : email}</li>
+<ul class="flex gap-2 justify-center mb-6">
+	{#each users as user}
+		<li>
+			<UserIcon captureOrigin {user} />
+		</li>
 	{/each}
 </ul>

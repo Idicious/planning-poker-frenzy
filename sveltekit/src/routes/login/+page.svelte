@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import Button from '$lib/components/Button.svelte';
 	import { supabaseClient } from '$lib/db';
 
 	export let email = '';
@@ -36,10 +35,10 @@
 <div class="shadow-lg p-3 mt-3">
 	<section class="flex flex-col items-center mb-6">
 		<h2 class="text-2xl text-center">Social logins</h2>
-		<Button on:click={handleGithub} fullWidth>
+		<button class="btn btn-primary w-full" on:click={handleGithub}>
 			<i class="fa fa-github mr-3" />
 			Sign in with Github
-		</Button>
+		</button>
 	</section>
 
 	<section class="flex flex-col justify-center">
@@ -54,7 +53,7 @@
 				bind:value={email}
 			/>
 			<div class="flex">
-				<Button type="submit">Login</Button>
+				<button class="btn btn-primary" type="submit">Login</button>
 				<a class="ml-1 underline" href="/register">Register</a>
 				{#if authError}
 					<div class="text-red-600 ml-3">Something went wrong</div>
