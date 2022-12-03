@@ -1,66 +1,31 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { enhance } from '$app/forms';
-	import Button from '$lib/components/Button.svelte';
-	import { createTouchTracking } from '$lib/forms/trackTouched';
-	import { createValidator } from '$lib/forms/validation';
-	import { ProfileDTOSchema, type ProfileDTO } from '$lib/schemas/profile';
-	import type { ActionData, PageData } from './$types';
+	import Card from '$lib/components/Card.svelte';
+	import type { PageData } from './$types';
 
 	export let data: PageData;
-	export let form: ActionData;
-
-	const validateForm = createValidator(ProfileDTOSchema);
-	const { trackTouched, touched } = createTouchTracking<ProfileDTO>({
-		username: !browser,
-		website: !browser
-	});
 </script>
 
 <svelte:head>
 	<title>Profile</title>
 </svelte:head>
 
-{#if form?.success}
-	<p class="text-green-500">Profile updated!</p>
-{/if}
-
-<form
-	method="POST"
-	use:trackTouched
-	on:input={validateForm}
-	use:enhance={({ form, cancel }) => {
-		validateForm(form, cancel);
-	}}
->
-	<div>
+<Card>
+	<img
+		src="/api/avatar"
+		alt="profile_picture"
+		class="w-64 h-64 rounded-full object-cover mx-auto"
+	/>
+	<div class="py-2">
 		<label for="email"><strong>Email: </strong></label>
-		<span name="email">{data.session?.user.email}</span>
+		<span>{data.session?.user.email}</span>
 	</div>
-	<div>
-		<label for="username">Username</label>
-		<input
-			class="block border-solid px-3 py-2 rounded border-2 min-w-full mb-3"
-			placeholder="Username"
-			name="username"
-			value={form?.username ?? data.username}
-		/>
-		{#if $touched.username && form?.errors?.username}
-			<p class="text-red-600 text-sm">{form.errors.username[0]}</p>
-		{/if}
+	<div class="py-2">
+		<label for="username"><strong>Username:</strong></label>
+		<span>{data.username}</span>
 	</div>
-	<div>
-		<label for="website">Website</label>
-		<input
-			class="block border-solid px-3 py-2 rounded border-2 min-w-full mb-3"
-			placeholder="Website"
-			name="website"
-			value={form?.website ?? data.website}
-		/>
-		{#if form?.errors?.website}
-			<p class="text-red-600 text-sm">{form.errors.website[0]}</p>
-		{/if}
+	<div class="py-2 mb-3">
+		<label for="website"><strong>Website:</strong></label>
+		<span>{data.website}</span>
 	</div>
-
-	<Button type="submit">Update</Button>
-</form>
+	<a class="link" href="/profile/edit">Edit</a>
+</Card>

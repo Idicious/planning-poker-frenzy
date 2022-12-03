@@ -42,7 +42,7 @@
 </header>
 
 <main class="flex justify-center">
-	<div class="w-full md:max-w-4xl flex-">
+	<div class="w-full md:max-w-4xl">
 		<slot />
 	</div>
 </main>
