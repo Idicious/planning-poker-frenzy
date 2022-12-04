@@ -1,7 +1,7 @@
 import { supabaseClient } from '$lib/db';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 import { derived, get, writable, type Writable } from 'svelte/store';
-import { userIconPositionStore } from './user-icon-postions';
+import { userIconPositionStore } from './user-icon-positions';
 
 export interface OnlineUser {
 	vote: number;

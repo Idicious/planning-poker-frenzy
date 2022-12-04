@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { OnlineUser } from '$lib/stores/online-users';
-	import { userIconPositionStore } from '$lib/stores/user-icon-postions';
+	import { userIconPositionStore } from '$lib/stores/user-icon-positions';
 	import { fade, fly } from 'svelte/transition';
 
 	export let user: OnlineUser;
@@ -38,7 +38,7 @@
 	use:setPositions
 	on:introend={updatePosition}
 	in:fly={{ x: deltaPosition.x, y: deltaPosition.y }}
-	out:fade={{ duration: 100 }}
+	out:fade|local={{ duration: 100 }}
 	class="rounded-full border-solid border-4 w-16 h-16 flex items-center justify-center border-black bg-slate-800 text-white font-bold relative group"
 	class:border-green-500={user.vote != null}
 >
