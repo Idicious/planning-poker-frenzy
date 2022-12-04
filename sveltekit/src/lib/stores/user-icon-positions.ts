@@ -18,6 +18,16 @@ function createUserIconPositionStore() {
 		},
 		setLast: (userId: string, position: DOMRect) => {
 			last.update((store) => ({ ...store, [userId]: position }));
+		},
+		removeUser: (userId: string) => {
+			origin.update((store) => {
+				const { [userId]: _, ...rest } = store;
+				return rest;
+			});
+			last.update((store) => {
+				const { [userId]: _, ...rest } = store;
+				return rest;
+			});
 		}
 	};
 }

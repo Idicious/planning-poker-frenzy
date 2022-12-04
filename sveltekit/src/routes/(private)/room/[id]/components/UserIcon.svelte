@@ -28,9 +28,8 @@
 		}
 	}
 
-	function updatePosition(e: { currentTarget: HTMLDivElement }) {
-		const position = e.currentTarget.getBoundingClientRect();
-		userIconPositionStore.setLast(user.email, position);
+	function updatePosition() {
+		userIconPositionStore.setLast(user.email, ownPosition);
 	}
 </script>
 

@@ -6,6 +6,7 @@ import { userIconPositionStore } from './user-icon-positions';
 export interface OnlineUser {
 	vote: number;
 	email: string;
+	presence_ref: string;
 }
 
 interface RoomState {
@@ -36,14 +37,11 @@ function createOnlineUsersStore() {
 		if (channel) await leave();
 		joined = new Date();
 
-		console.info(`Subscribing to online users for room ${room}`);
 		channel = await createChannelForRoom(room, email, store, revealStore);
-
 		channel.track({ vote: get(vote), joined });
 	}
 
 	async function leave() {
-		console.info(`Leaving current room`);
 		if (channel) await channel.unsubscribe();
 
 		channel = null;
@@ -60,7 +58,7 @@ function createOnlineUsersStore() {
 		currentVote: { subscribe: vote.subscribe },
 		joinRoom,
 		leave,
-		async setVote(value: string | number | null) {
+		setVote(value: string | number | null) {
 			vote.set(value);
 			channel?.track({ vote: value, joined });
 		},
@@ -106,9 +104,10 @@ function createChannelForRoom(
 				})
 				.at(0);
 
-			const host = firstJoinedUser?.[0] ?? email;
+			const host = firstJoinedUser?.[0] ?? null;
 			const users = Object.entries(presenceState).map(([key, [state]]) => ({
 				email: key,
+				presence_ref: state.presence_ref,
 				vote: state.vote
 			})) as OnlineUser[];
 
