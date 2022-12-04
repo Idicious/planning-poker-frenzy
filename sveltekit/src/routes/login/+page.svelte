@@ -6,7 +6,10 @@
 	export let authError = false;
 
 	async function handleLogin() {
-		const { error } = await supabaseClient.auth.signInWithOtp({ email });
+		const { error } = await supabaseClient.auth.signInWithOtp({
+			email,
+			options: { emailRedirectTo: window.location.origin }
+		});
 
 		if (error) {
 			authError = true;
@@ -17,7 +20,10 @@
 	}
 
 	async function handleGithub() {
-		const { error } = await supabaseClient.auth.signInWithOAuth({ provider: 'github' });
+		const { error } = await supabaseClient.auth.signInWithOAuth({
+			provider: 'github',
+			options: { redirectTo: window.location.origin }
+		});
 
 		if (error) {
 			authError = true;
