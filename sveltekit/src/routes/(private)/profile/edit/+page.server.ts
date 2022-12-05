@@ -4,6 +4,7 @@ import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import type { TypedSupabaseClient } from '@supabase/auth-helpers-sveltekit/dist/types';
 import type { Session } from '@supabase/supabase-js';
 import { error as httpError, redirect, type Actions } from '@sveltejs/kit';
+import sharp from 'sharp';
 
 type AuthenticatedSupabase = {
 	supabaseClient: TypedSupabaseClient;
@@ -28,7 +29,8 @@ export const actions: Actions = {
 			}
 
 			if (avatar.size > 0) {
-				const avatarUrl = await uploadAvatar(supabaseClient, session, avatar);
+				const resizedImage = await resizeImage(avatar);
+				const avatarUrl = await uploadAvatar(supabaseClient, session, resizedImage);
 				await updateProfileWithAvatarUrl(supabaseClient, session, avatarUrl);
 			}
 
@@ -37,12 +39,17 @@ export const actions: Actions = {
 	)
 };
 
-async function uploadAvatar(supabaseClient: TypedSupabaseClient, session: Session, file: Blob) {
-	const avatarPath = `${session.user.id}/avatar`;
+async function resizeImage(file: Blob) {
+	const fileBuffer = await file.arrayBuffer();
+	return await sharp(Buffer.from(fileBuffer)).resize(480, 480).webp().toBuffer();
+}
 
-	const { error } = await supabaseClient.storage.from('avatars').upload(avatarPath, file, {
+async function uploadAvatar(supabaseClient: TypedSupabaseClient, session: Session, avatar: Buffer) {
+	const avatarPath = `${session.user.id}/avatar.webp`;
+
+	const { error } = await supabaseClient.storage.from('avatars').upload(avatarPath, avatar, {
 		upsert: true,
-		contentType: file.type
+		contentType: 'image/webp'
 	});
 
 	if (error) {
@@ -58,11 +65,9 @@ async function updateProfileWithAvatarUrl(
 	session: Session,
 	avatarPath: string
 ) {
-	const { data } = supabaseClient.storage.from('avatars').getPublicUrl(avatarPath);
-
 	const { error } = await supabaseClient
 		.from('profiles')
-		.update({ avatar_url: data.publicUrl })
+		.update({ avatar_url: avatarPath })
 		.eq('id', session.user.id);
 
 	if (error != null) {

@@ -27,7 +27,7 @@
 
 <Card>
 	<img
-		src="/api/avatar"
+		src={data.avatar_url}
 		alt="profile_picture"
 		class="w-64 h-64 rounded-full object-cover mx-auto"
 	/>
