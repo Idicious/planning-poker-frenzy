@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { supabaseClient } from '$lib/db';
+	import { faGithub } from '@fortawesome/free-brands-svg-icons';
+	import Fa from 'svelte-fa';
 
 	export let email = '';
 	export let authError = false;
@@ -41,8 +43,8 @@
 <div class="shadow-lg p-3 mt-3">
 	<section class="flex flex-col items-center mb-6">
 		<h2 class="text-2xl text-center">Social logins</h2>
-		<button class="btn btn-primary w-full" on:click={handleGithub}>
-			<i class="fa fa-github mr-3" />
+		<button class="btn btn-primary w-full text-center" on:click={handleGithub}>
+			<Fa icon={faGithub} size="2x" fw class="inline mr-3" />
 			Sign in with Github
 		</button>
 	</section>
@@ -60,7 +62,6 @@
 			/>
 			<div class="flex">
 				<button class="btn btn-primary" type="submit">Login</button>
-				<a class="ml-1 underline" href="/register">Register</a>
 				{#if authError}
 					<div class="text-red-600 ml-3">Something went wrong</div>
 				{/if}
