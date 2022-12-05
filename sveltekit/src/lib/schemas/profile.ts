@@ -11,7 +11,8 @@ export const ProfileDTOSchema = z
 			.string({ required_error: 'Website is required' })
 			.describe('Website')
 			.url({ message: 'Invalid website URL' })
-			.optional(),
+			.optional()
+			.or(z.literal('').transform(() => undefined)),
 		avatar: z
 			.any()
 			.optional()

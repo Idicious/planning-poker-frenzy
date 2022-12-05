@@ -15,6 +15,9 @@
 		username: !browser,
 		website: !browser
 	});
+
+	let files: FileList;
+	$: selectedFileUrl = files?.[0] ? URL.createObjectURL(files[0]) : null;
 </script>
 
 <svelte:head>
@@ -27,7 +30,7 @@
 
 <Card>
 	<img
-		src={data.avatar_url}
+		src={selectedFileUrl ?? data.avatar_url}
 		alt="profile_picture"
 		class="w-64 h-64 rounded-full object-cover mx-auto"
 	/>
@@ -42,7 +45,7 @@
 	>
 		<div class="py-2">
 			<label for="file" class="block">Avatar</label>
-			<input type="file" name="avatar" accept="image/*" />
+			<input type="file" name="avatar" accept="image/*" bind:files />
 		</div>
 		<div class="py-2">
 			<label for="username">Username</label>

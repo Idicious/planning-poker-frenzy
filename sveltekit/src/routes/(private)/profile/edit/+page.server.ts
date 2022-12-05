@@ -40,12 +40,13 @@ export const actions: Actions = {
 };
 
 async function resizeImage(file: Blob) {
-	const fileBuffer = await file.arrayBuffer();
-	return await sharp(Buffer.from(fileBuffer)).resize(480, 480).webp().toBuffer();
+	const fileBuffer = Buffer.from(await file.arrayBuffer());
+	return await sharp(fileBuffer).resize(480, 480).webp().toBuffer();
 }
 
 async function uploadAvatar(supabaseClient: TypedSupabaseClient, session: Session, avatar: Buffer) {
-	const avatarPath = `${session.user.id}/avatar.webp`;
+	const time = new Date().getTime();
+	const avatarPath = `${session.user.id}/avatar-${time}.webp`;
 
 	const { error } = await supabaseClient.storage.from('avatars').upload(avatarPath, avatar, {
 		upsert: true,
