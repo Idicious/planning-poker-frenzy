@@ -2,7 +2,7 @@ import { getSupabase } from '@supabase/auth-helpers-sveltekit';
 import type { Session } from '@supabase/supabase-js';
 import {
 	error,
-	invalid,
+	fail,
 	type LoadEvent,
 	type RequestEvent,
 	type ServerLoadEvent
@@ -39,6 +39,6 @@ export function validate<TSchema, TResult>(
 		const errors = parsedData.error.flatten().fieldErrors;
 		const payload = { success: false, ...data, errors } as const;
 
-		return invalid(400, payload);
+		return fail(400, payload);
 	};
 }
