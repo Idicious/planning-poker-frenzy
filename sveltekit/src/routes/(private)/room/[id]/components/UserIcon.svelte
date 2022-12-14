@@ -10,7 +10,7 @@
 
 	let ownPosition = { x: 0, y: 0 } as DOMRect;
 
-	$: userAbreviation = user.email.substring(0, 2).toUpperCase();
+	$: userAbbreviation = user.email.substring(0, 2).toUpperCase();
 
 	$: originPosition = $origin[user.email] ?? ownPosition;
 	$: lastPosition = $last[user.email] ?? originPosition;
@@ -45,5 +45,5 @@
 		class="absolute text-black -right-56 -top-6 hidden group-hover:block bg-white p-1 rounded shadow-sm z-10"
 		>{user.email}</span
 	>
-	<span class="text-center">{userAbreviation}</span>
+	<span class="text-center">{userAbbreviation}</span>
 </div>
