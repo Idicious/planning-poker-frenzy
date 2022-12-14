@@ -18,14 +18,14 @@ module.exports = {
 		node: true
 	},
 	rules: {
-		"no-unused-vars": "off",
-		"@typescript-eslint/no-unused-vars": [
-		"warn", // or "error"
-		{ 
-			"argsIgnorePattern": "^_",
-			"varsIgnorePattern": "^_",
-			"caughtErrorsIgnorePattern": "^_"
-		}
-		],
+		'no-unused-vars': 'off',
+		'@typescript-eslint/no-unused-vars': [
+			'warn', // or "error"
+			{
+				argsIgnorePattern: '^_',
+				varsIgnorePattern: '^_',
+				caughtErrorsIgnorePattern: '^_'
+			}
+		]
 	}
 };
