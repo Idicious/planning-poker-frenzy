@@ -52,12 +52,12 @@ export function createValidator(schema: z.ZodSchema) {
 				const currentErrors = getCurrentErrors(page);
 				applyAction({
 					status: 400,
-					type: 'invalid',
+					type: 'failure',
 					data: { success: false, errors: { ...currentErrors, ...errors } }
 				});
 			} else {
 				console.log('form event', errors);
-				applyAction({ status: 400, type: 'invalid', data: { success: false, errors } });
+				applyAction({ status: 400, type: 'failure', data: { success: false, errors } });
 			}
 		}
 
