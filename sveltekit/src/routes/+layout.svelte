@@ -1,12 +1,15 @@
 <script>
 	import '../app.css';
 
-	import { supabaseClient } from '$lib/db';
 	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { supabaseClient } from '$lib/db';
+	import { inject } from '@vercel/analytics';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
+		inject();
+
 		const { data } = supabaseClient.auth.onAuthStateChange(() => {
 			invalidate('supabase:auth');
 		});
