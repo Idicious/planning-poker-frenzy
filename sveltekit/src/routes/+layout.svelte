@@ -1,10 +1,27 @@
 <script>
 	import '../app.css';
 
-	import { supabaseClient } from '$lib/db';
 	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { supabaseClient } from '$lib/db';
+	import { inject } from '@vercel/analytics';
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+	import { webVitals } from '$lib/vitals';
+
+	const analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
+
+	$: if (browser) {
+		inject();
+	}
+
+	$: if (browser && analyticsId) {
+		webVitals({
+			path: $page.url.pathname,
+			params: $page.params,
+			analyticsId
+		});
+	}
 
 	onMount(() => {
 		const { data } = supabaseClient.auth.onAuthStateChange(() => {
