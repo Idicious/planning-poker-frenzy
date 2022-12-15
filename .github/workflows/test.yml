@@ -22,9 +22,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
-      env: # Or as an environment variable
-        PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-        PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
@@ -34,5 +31,8 @@ jobs:
       working-directory: ./sveltekit
     - run: npm run build --if-present
       working-directory: ./sveltekit
+      env: 
+        PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
+        PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
     - run: npm test
       working-directory: ./sveltekit
