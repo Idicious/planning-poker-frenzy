@@ -11,6 +11,10 @@
 
 	const analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
 
+	$: if (browser) {
+		inject();
+	}
+
 	$: if (browser && analyticsId) {
 		webVitals({
 			path: $page.url.pathname,
@@ -20,8 +24,6 @@
 	}
 
 	onMount(() => {
-		inject();
-
 		const { data } = supabaseClient.auth.onAuthStateChange(() => {
 			invalidate('supabase:auth');
 		});
