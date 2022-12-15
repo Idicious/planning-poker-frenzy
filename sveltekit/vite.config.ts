@@ -1,11 +1,15 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import type { UserConfig } from 'vite';
+import { defineConfig } from 'vite';
 
-const config: UserConfig = {
+/// <reference path="vitest" />
+
+export default defineConfig({
 	plugins: [sveltekit()],
 	define: {
 		'import.meta.env.VERCEL_ANALYTICS_ID': JSON.stringify(process.env.VERCEL_ANALYTICS_ID)
+	},
+	test: {
+		globals: true,
+		environment: 'happy-dom'
 	}
-};
-
-export default config;
+});
