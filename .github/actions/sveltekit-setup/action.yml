@@ -1,0 +1,13 @@
+name: "SvelteKit setup"
+description: Shared setup step for all sveltekit CI jobs
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: "npm"
+        cache-dependency-path: ./sveltekit/package-lock.json
+    - run: npm ci
+      shell: bash
+      working-directory: ./sveltekit
