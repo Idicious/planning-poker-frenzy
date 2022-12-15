@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 
 	import { goto, invalidate } from '$app/navigation';
@@ -11,11 +11,8 @@
 
 	const analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
 
-	$: if (browser) {
-		inject();
-	}
-
 	$: if (browser && analyticsId) {
+		inject();
 		webVitals({
 			path: $page.url.pathname,
 			params: $page.params,
@@ -52,7 +49,6 @@
 				<li><button on:click={handleLogout}>Logout</button></li>
 			{:else}
 				<li><a href="/login">Login</a></li>
-				<li><a href="/register">Register</a></li>
 			{/if}
 		</ul>
 	</nav>
