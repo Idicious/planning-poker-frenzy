@@ -29,6 +29,8 @@ jobs:
         cache-dependency-path: ./sveltekit/package-lock.json
     - run: npm ci
       working-directory: ./sveltekit
+    - run: npx playwright install --with-deps
+      working-directory: ./sveltekit
     - run: npm test
       working-directory: ./sveltekit
       env: 
