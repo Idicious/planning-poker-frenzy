@@ -33,6 +33,8 @@ jobs:
         node-version: 18.x
         cache: 'npm'
         cache-dependency-path: ./sveltekit/package-lock.json
+    - run: npm ci
+      working-directory: ./sveltekit
     - run: npm run lint
       working-directory: ./sveltekit
       
@@ -47,6 +49,8 @@ jobs:
         node-version: 18.x
         cache: 'npm'
         cache-dependency-path: ./sveltekit/package-lock.json
+    - run: npm ci
+      working-directory: ./sveltekit
     - run: npm run check
       working-directory: ./sveltekit
       
@@ -61,7 +65,9 @@ jobs:
         node-version: 18.x
         cache: 'npm'
         cache-dependency-path: ./sveltekit/package-lock.json
-    - run: npx playwright install --with-deps
+    - run: npm ci
+      working-directory: ./sveltekit
+    - run: npx playwright install-deps chromium
       working-directory: ./sveltekit
     - run: npm test
       working-directory: ./sveltekit
