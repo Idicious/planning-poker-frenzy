@@ -53,6 +53,9 @@ jobs:
       working-directory: ./sveltekit
     - run: npm run check
       working-directory: ./sveltekit
+      env: 
+        PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
+        PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
       
   test:
     runs-on: ubuntu-latest
@@ -67,7 +70,7 @@ jobs:
         cache-dependency-path: ./sveltekit/package-lock.json
     - run: npm ci
       working-directory: ./sveltekit
-    - run: npx playwright install-deps chromium
+    - run: npx playwright install --with-deps
       working-directory: ./sveltekit
     - run: npm test
       working-directory: ./sveltekit
