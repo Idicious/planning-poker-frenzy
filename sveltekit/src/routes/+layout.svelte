@@ -45,7 +45,7 @@
 	<nav>
 		<ul class="flex gap-2 justify-center">
 			{#if $page.data.session}
-				<li><a href="/profile">Profile</a></li>
+				<li><a href="/user/profile">Profile</a></li>
 				<li><button on:click={handleLogout}>Logout</button></li>
 			{:else}
 				<li><a href="/login">Login</a></li>
