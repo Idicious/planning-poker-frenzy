@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"zixuanchen.vitest-explorer",
+		"svelte.svelte-vscode",
+		"esbenp.prettier-vscode",
+		"mtxr.sqltools-driver-pg",
+		"mtxr.sqltools",
+		"bradlc.vscode-tailwindcss"
+	]
+}

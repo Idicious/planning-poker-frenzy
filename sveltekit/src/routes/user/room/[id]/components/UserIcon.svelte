@@ -34,6 +34,7 @@
 </script>
 
 <div
+	data-testid="user-icon-container"
 	use:setPositions
 	on:introend={updatePosition}
 	in:fly={{ x: deltaPosition.x, y: deltaPosition.y }}
