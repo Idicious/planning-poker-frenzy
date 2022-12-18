@@ -73,6 +73,6 @@
 		</div>
 
 		<button class="btn btn-primary" type="submit">Update</button>
-		<a class="link" href="/profile">Cancel</a>
+		<a class="link" href="/user/profile">Cancel</a>
 	</form>
 </Card>

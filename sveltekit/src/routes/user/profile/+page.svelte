@@ -27,5 +27,5 @@
 		<label for="website"><strong>Website:</strong></label>
 		<span>{data.website}</span>
 	</div>
-	<a class="link" href="/profile/edit">Edit</a>
+	<a class="link" href="/user/profile/edit">Edit</a>
 </Card>
