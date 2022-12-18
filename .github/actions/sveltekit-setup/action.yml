@@ -3,11 +3,16 @@ description: Shared setup step for all sveltekit CI jobs
 runs:
   using: "composite"
   steps:
+    - uses: actions/checkout@v3
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 7
     - uses: actions/setup-node@v3
       with:
         node-version: 18.x
-        cache: "npm"
-        cache-dependency-path: ./sveltekit/package-lock.json
-    - run: npm ci
+        cache: "pnpm"
+        cache-dependency-path: ./sveltekit/pnpm-lock.yaml
+    - name: Install dependencies
+      run: pnpm install
       shell: bash
       working-directory: ./sveltekit

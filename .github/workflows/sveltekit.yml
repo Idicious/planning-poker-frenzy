@@ -17,20 +17,18 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: SvelteKit setup
         uses: ./.github/actions/sveltekit-setup
       - name: Lint application
-        run: npm run lint
+        run: pnpm run lint
 
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: SvelteKit setup
         uses: ./.github/actions/sveltekit-setup
       - name: Check application for errors
-        run: npm run check
+        run: pnpm run check
         env:
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
@@ -38,22 +36,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: SvelteKit setup
         uses: ./.github/actions/sveltekit-setup
       - name: Run unit tests
-        run: npm run test:coverage
+        run: pnpm run test:coverage
 
   e2e:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - name: SvelteKit setup
         uses: ./.github/actions/sveltekit-setup
       - name: Run integration tests
         run: |
-          npx playwright install --with-deps
-          npm run test:e2e
+          pnpm playwright install --with-deps
+          pnpm run test:e2e
         env:
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
