@@ -47,7 +47,7 @@
 		{user.username}
 	</figcaption>
 	{#if user.avatarUrl}
-		<img src={user.avatarUrl} alt={user.username} class="rounded-full w-14 h-14" />
+		<img src={user.avatarUrl} alt="user-avatar" class="rounded-full w-14 h-14" />
 	{:else}
 		<span>{userAbbreviation}</span>
 	{/if}
