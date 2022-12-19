@@ -3,9 +3,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import UserIcon from './UserIcon.svelte';
 
-	const dispatch = createEventDispatcher<{ vote: string | number }>();
+	const dispatch = createEventDispatcher<{ vote: string }>();
 
-	export let value: string | number;
+	export let value: string;
 	export let votesRevealed = false;
 	export let users: OnlineUser[] = [];
 	export let vote: number | string | null = null;
