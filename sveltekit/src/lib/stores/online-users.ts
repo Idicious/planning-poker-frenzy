@@ -7,7 +7,7 @@ export interface OnlineUser {
 	vote: string | null;
 	username: string;
 	avatarUrl: string | null;
-	joined: string;
+	joined: Date;
 	presence_ref: string;
 }
 
@@ -100,18 +100,18 @@ function configureChannel(
 function presenceStateToUsers(presenceState: RealtimePresenceState) {
 	return Object.entries(presenceState).map(([key, [state]]) => ({
 		username: key,
-		presence_ref: state.presence_ref,
-		vote: state.vote,
-		avatarUrl: state.avatarUrl,
-		joined: state.joined
+		presence_ref: state.presence_ref ?? null,
+		vote: state.vote ?? null,
+		avatarUrl: state.avatarUrl ?? null,
+		joined: new Date(state.joined)
 	})) as OnlineUser[];
 }
 
 function getFirstJoinedUser(onlineUsers: OnlineUser[]) {
 	return onlineUsers
 		.sort(({ joined: joinedA }, { joined: joinedB }) => {
-			const aJoined = new Date(joinedA);
-			const bJoined = new Date(joinedB);
+			const aJoined = joinedA;
+			const bJoined = joinedB;
 			return aJoined.getTime() - bJoined.getTime();
 		})
 		.at(0);
