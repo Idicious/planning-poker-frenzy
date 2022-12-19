@@ -42,10 +42,11 @@
 	class:border-green-500={user.vote != null}
 >
 	<figcaption
-		class="absolute text-black left-full ml-2 -top-7 scale-0 group-hover:scale-100 bg-white p-1 rounded shadow-sm z-10 transition-all origin-left"
+		class="absolute text-black left-full ml-2 -top-7 scale-0 group-hover:scale-100 bg-white p-1 rounded shadow-sm z-10 transition-all origin-bottom-left"
 	>
 		{user.username}
 	</figcaption>
+
 	{#if user.avatarUrl}
 		<img src={user.avatarUrl} alt="user-avatar" class="rounded-full w-14 h-14" />
 	{:else}
