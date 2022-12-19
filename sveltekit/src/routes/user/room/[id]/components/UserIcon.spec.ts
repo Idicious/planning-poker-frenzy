@@ -3,10 +3,9 @@ import { userIconPositionStore } from '$lib/stores/user-icon-positions';
 import { render } from '@testing-library/svelte';
 import html from 'svelte-htm';
 import { get } from 'svelte/store';
-import { describe, expect, test } from 'vitest';
 import UserIcon from './UserIcon.svelte';
 
-const user = { email: 'test@test.com' } as OnlineUser;
+const user = { username: 'test@test.com' } as OnlineUser;
 
 describe('UserIcon', () => {
 	test('should render user abbreviation', () => {
@@ -22,17 +21,21 @@ describe('UserIcon', () => {
 	test('should capture origin', () => {
 		render(html`<${UserIcon} user=${user} captureOrigin />`);
 
-		const origin = get(userIconPositionStore.origin)[user.email];
+		const state = get(userIconPositionStore.origin);
+		const origin = state[user.username];
+
 		expect(origin).toBeDefined();
 	});
 
 	test('should update position', () => {
-		const { getByTestId } = render(html`<${UserIcon} user=${user} />`);
-		const container = getByTestId('user-icon-container');
+		const { getByRole } = render(html`<${UserIcon} user=${user} />`);
+		const container = getByRole('figure');
 
 		container.dispatchEvent(new CustomEvent('introend'));
 
-		const last = get(userIconPositionStore.last)[user.email];
+		const state = get(userIconPositionStore.last);
+		const last = state[user.username];
+
 		expect(last).toBeDefined();
 	});
 });

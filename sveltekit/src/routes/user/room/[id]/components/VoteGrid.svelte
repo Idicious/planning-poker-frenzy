@@ -6,7 +6,7 @@
 	export let vote: number | string | null = null;
 	export let votesRevealed = false;
 
-	const values = [1, 2, 3, 5, 8, 13, 20, 'Koffie', '?'];
+	const values = ['1', '2', '3', '5', '8', '13', '20', 'Koffie', '?'];
 </script>
 
 <div class="grid grid-cols-3 gap-2">

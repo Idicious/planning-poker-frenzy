@@ -1,37 +1,27 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Card from '$lib/components/Card.svelte';
-	import { onlineUsers } from '$lib/stores/online-users';
+	import { createOnlineUsersStore } from '$lib/stores/online-users';
 	import { onDestroy, onMount } from 'svelte';
+	import type { PageData } from './$types';
 
 	import UserList from './components/UserList.svelte';
 	import VoteGrid from './components/VoteGrid.svelte';
 
-	let { votesRevealed, leave, joinRoom, currentVote } = onlineUsers;
+	export let data: PageData;
 
-	$: revealed = $votesRevealed;
-	$: users = $onlineUsers.users;
-	$: vote = $currentVote;
+	const { votesRevealed, leave, currentVote, onlineUsers, setVote, revealVotes, join, host } =
+		createOnlineUsersStore($page.params.id);
+
+	$: username = data.session?.user.email ?? 'Anonymous';
 
 	onMount(() => {
-		joinRoom($page.params.id, $page.data.session?.user.email);
+		join(username, data.avatar_url);
 	});
 
 	onDestroy(() => {
 		leave();
 	});
-
-	function handleVote(e: CustomEvent<string | number>) {
-		onlineUsers.setVote(e.detail);
-	}
-
-	function revealVotes() {
-		onlineUsers.revealVotes(true);
-	}
-
-	function hideVotes() {
-		onlineUsers.revealVotes(false);
-	}
 </script>
 
 <svelte:head>
@@ -39,14 +29,19 @@
 </svelte:head>
 
 <Card>
-	<UserList {users} />
-	<VoteGrid {users} {vote} votesRevealed={revealed} on:vote={handleVote} />
+	<UserList users={$onlineUsers} />
+	<VoteGrid
+		users={$onlineUsers}
+		vote={$currentVote}
+		votesRevealed={$votesRevealed}
+		on:vote={(e) => setVote(e.detail)}
+	/>
 
-	{#if $onlineUsers.host === $page.data.session?.user.email}
-		{#if revealed}
-			<button class="btn btn-accent mt-3" on:click={hideVotes}>Hide votes</button>
+	{#if $host === username}
+		{#if $votesRevealed}
+			<button class="btn btn-accent mt-3" on:click={() => revealVotes(false)}>Hide votes</button>
 		{:else}
-			<button class="btn btn-accent mt-3" on:click={revealVotes}>Reveal votes</button>
+			<button class="btn btn-accent mt-3" on:click={() => revealVotes(true)}>Reveal votes</button>
 		{/if}
 	{/if}
 </Card>
