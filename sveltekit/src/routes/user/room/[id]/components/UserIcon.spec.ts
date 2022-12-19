@@ -3,7 +3,6 @@ import { userIconPositionStore } from '$lib/stores/user-icon-positions';
 import { render } from '@testing-library/svelte';
 import html from 'svelte-htm';
 import { get } from 'svelte/store';
-import { describe, expect, test } from 'vitest';
 import UserIcon from './UserIcon.svelte';
 
 const user = { username: 'test@test.com' } as OnlineUser;
