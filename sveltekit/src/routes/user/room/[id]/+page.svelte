@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Card from '$lib/components/Card.svelte';
 	import { createOnlineUsersStore } from '$lib/stores/online-users';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 
 	import UserList from './components/UserList.svelte';
