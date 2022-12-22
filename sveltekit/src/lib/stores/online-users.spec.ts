@@ -116,7 +116,7 @@ describe('createOnlineUsersStore', async () => {
 		expect(revealed).toBe(true);
 	});
 
-	test('when a user leaves the channel should be unsubscribed from', () => {
+	test('when a user leaves the channel they should be unsubscribed from channel', () => {
 		const store = createOnlineUsersStore('room', 'username', 'avatarUrl');
 		store.leave();
 
