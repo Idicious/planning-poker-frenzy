@@ -1,6 +1,3 @@
-vi.stubEnv('PUBLIC_SUPABASE_URL', 'url');
-vi.stubEnv('PUBLIC_SUPABASE_ANON_KEY', 'key');
-
 import { supabaseClient } from '$lib/db';
 import { basicMocked } from '$lib/testing/utils';
 import { RealtimeChannel } from '@supabase/supabase-js';
@@ -24,7 +21,6 @@ describe('createOnlineUsersStore', async () => {
 
 	afterAll(() => {
 		vi.useRealTimers();
-		vi.unstubAllEnvs();
 	});
 
 	beforeEach(() => {
