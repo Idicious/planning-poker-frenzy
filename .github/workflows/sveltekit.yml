@@ -32,8 +32,8 @@ jobs:
       - name: Check application for errors
         run: pnpm check
         env:
-          PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
-          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_ANON_KEY: mock_key
+          PUBLIC_SUPABASE_URL: http://mock_url
 
   test:
     runs-on: ubuntu-latest
@@ -43,6 +43,9 @@ jobs:
         uses: ./.github/actions/sveltekit-setup
       - name: Run unit tests
         run: pnpm test:coverage
+        env:
+          PUBLIC_SUPABASE_ANON_KEY: mock_key
+          PUBLIC_SUPABASE_URL: http://mock_url
 
   e2e:
     runs-on: ubuntu-latest
