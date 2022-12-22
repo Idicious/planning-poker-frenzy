@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { supabaseClient } from '../db';
+import { supabaseClient } from '$lib/db';
 import type { RealtimeChannel, RealtimePresenceState } from '@supabase/supabase-js';
 import { derived, get, writable, type Writable } from 'svelte/store';
 import { userIconPositionStore } from './user-icon-positions';
