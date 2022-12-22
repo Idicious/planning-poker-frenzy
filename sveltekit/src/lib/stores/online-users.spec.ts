@@ -1,3 +1,5 @@
+vi.resetModules();
+
 import { supabaseClient } from '$lib/db';
 import { basicMocked } from '$lib/testing/utils';
 import { RealtimeChannel } from '@supabase/supabase-js';
