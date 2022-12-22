@@ -93,7 +93,6 @@ function configureChannel(
 		}
 
 		if (status === 'SUBSCRIBED') {
-			console.log('Subscribed to online users channel');
 			channel.track({ vote: null, joined, avatarUrl });
 		}
 	});
