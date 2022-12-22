@@ -1,15 +1,14 @@
-vi.mock('$lib/db');
-vi.mock('@supabase/supabase-js');
-
-vi.mock('$app/environment', () => ({
-	browser: true
-}));
-
 import { supabaseClient } from '$lib/db';
 import { basicMocked } from '$lib/testing/utils';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { get } from 'svelte/store';
 import { createOnlineUsersStore } from './online-users';
+
+vi.mock('$lib/db');
+vi.mock('@supabase/supabase-js');
+vi.mock('$app/environment', () => ({
+	browser: true
+}));
 
 describe('createOnlineUsersStore', async () => {
 	const mockSupabaseClient = vi.mocked(supabaseClient);
