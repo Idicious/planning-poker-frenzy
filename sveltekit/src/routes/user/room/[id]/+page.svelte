@@ -10,14 +10,10 @@
 
 	export let data: PageData;
 
-	const { votesRevealed, leave, currentVote, onlineUsers, setVote, revealVotes, join, host } =
-		createOnlineUsersStore($page.params.id);
+	const username = data.session?.user.email ?? 'Anonymous';
 
-	$: username = data.session?.user.email ?? 'Anonymous';
-
-	onMount(() => {
-		join(username, data.avatar_url);
-	});
+	const { votesRevealed, leave, currentVote, onlineUsers, setVote, revealVotes, host } =
+		createOnlineUsersStore($page.params.id, username, data.avatar_url);
 
 	onDestroy(() => {
 		leave();
