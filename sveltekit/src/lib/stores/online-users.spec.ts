@@ -17,10 +17,14 @@ describe('createOnlineUsersStore', async () => {
 	beforeAll(() => {
 		vi.useFakeTimers();
 		vi.setSystemTime('2022-01-01');
+
+		vi.stubEnv('PUBLIC_SUPABASE_URL', 'url');
+		vi.stubEnv('PUBLIC_SUPABASE_ANON_KEY', 'key');
 	});
 
 	afterAll(() => {
 		vi.useRealTimers();
+		vi.unstubAllEnvs();
 	});
 
 	beforeEach(() => {
