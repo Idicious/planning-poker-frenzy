@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import Card from '$lib/components/Card.svelte';
 	import { createOnlineUsersStore } from '$lib/stores/online-users';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';
 
 	import UserList from './components/UserList.svelte';
@@ -10,14 +10,10 @@
 
 	export let data: PageData;
 
-	const { votesRevealed, leave, currentVote, onlineUsers, setVote, revealVotes, join, host } =
-		createOnlineUsersStore($page.params.id);
+	const username = data.session?.user.email ?? 'Anonymous';
 
-	$: username = data.session?.user.email ?? 'Anonymous';
-
-	onMount(() => {
-		join(username, data.avatar_url);
-	});
+	const { votesRevealed, leave, currentVote, onlineUsers, setVote, revealVotes, host } =
+		createOnlineUsersStore($page.params.id, username, data.avatar_url);
 
 	onDestroy(() => {
 		leave();
