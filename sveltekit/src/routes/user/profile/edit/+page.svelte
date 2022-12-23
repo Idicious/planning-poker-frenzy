@@ -4,7 +4,7 @@
 	import Card from '$lib/components/Card.svelte';
 	import { createTouchTracking } from '$lib/forms/trackTouched';
 	import { createValidator } from '$lib/forms/validation';
-	import { ProfileDTOSchema, type ProfileDTO } from '$lib/schemas/profile';
+	import { ProfileDTOSchema, type ProfileDTO } from '$lib/profile/schemas';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
