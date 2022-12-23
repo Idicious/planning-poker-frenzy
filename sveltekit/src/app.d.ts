@@ -4,12 +4,11 @@
 // and what to do when importing types
 declare namespace App {
 	interface Supabase {
-		Database: import('./DatabaseDefinitions').Database;
+		Database: import('./lib/db-types').Database;
 		SchemaName: 'public';
 	}
 	interface Locals {
-		session: import('@supabase/supabase-js').Session | null;
-		sb: import('@supabase/supabase-js').SupabaseClient<import('./DatabaseDefinitions').Database>;
+		injector: import('inversify').Container;
 	}
 	interface PageData {
 		session: import('@supabase/supabase-js').Session | null;
