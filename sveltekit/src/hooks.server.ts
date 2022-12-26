@@ -4,7 +4,6 @@ import 'reflect-metadata';
 import { appContainer } from '$lib/inversify.config';
 import { Tokens } from '$lib/di-tokens';
 import { getSupabase } from '@supabase/auth-helpers-sveltekit';
-import { SupabaseClient } from '@supabase/supabase-js';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { Container } from 'inversify';
 
@@ -18,7 +17,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const container = new Container();
 
 	container.bind(Tokens.Session).toConstantValue(session);
-	container.bind(SupabaseClient).toConstantValue(supabaseClient);
+	container.bind(Tokens.Supabase).toConstantValue(supabaseClient);
 
 	container.load(appContainer);
 	event.locals.injector = container;

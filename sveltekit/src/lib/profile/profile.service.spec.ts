@@ -1,11 +1,13 @@
 import { Tokens } from '$lib/di-tokens';
 import { mockServer } from '$lib/testing/mock-server';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 import { error } from '@sveltejs/kit';
 import { Container } from 'inversify';
 import { rest } from 'msw';
-import { AvatarService } from './avatar.service';
+import { ImageService } from './image.service';
 import { ProfileService } from './profile.service';
+
+vi.mock('imagekit');
 
 describe('ProfileService', () => {
 	let profileService: ProfileService;
@@ -15,9 +17,10 @@ describe('ProfileService', () => {
 		const supabaseClient = createClient('http://mock', 'secret');
 
 		container.bind(ProfileService).toSelf();
-		container.bind(AvatarService).toSelf();
-		container.bind(SupabaseClient).toConstantValue(supabaseClient);
+		container.bind(ImageService).toSelf();
+		container.bind(Tokens.Supabase).toConstantValue(supabaseClient);
 		container.bind(Tokens.Session).toConstantValue({ user: { id: '1' } });
+		container.bind(Tokens.ImageKitConfig).toConstantValue({});
 
 		profileService = container.get(ProfileService);
 	});

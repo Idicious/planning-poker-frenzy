@@ -1,18 +1,17 @@
-import type { Database } from '$lib/db-types';
+import type { ProfileUpdate } from '$lib/db-types';
 import { Tokens } from '$lib/di-tokens';
-import { SupabaseClient, type Session } from '@supabase/supabase-js';
+import type { Database } from '$lib/generated-db-types';
+import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import { error as httpError } from '@sveltejs/kit';
 import { inject, injectable } from 'inversify';
-import { omit } from 'lodash-es';
-import { AvatarService } from './avatar.service';
-import type { ProfileDTO } from './schemas';
+import { ImageService } from './image.service';
 
 @injectable()
 export class ProfileService {
 	constructor(
 		@inject(Tokens.Session) private readonly session: Session,
-		@inject(SupabaseClient) private readonly supabase: SupabaseClient<Database>,
-		@inject(AvatarService) private readonly avatarService: AvatarService
+		@inject(Tokens.Supabase) private readonly supabase: SupabaseClient<Database>,
+		@inject(ImageService) private readonly imageService: ImageService
 	) {}
 
 	async getProfile() {
@@ -29,18 +28,29 @@ export class ProfileService {
 		return data;
 	}
 
-	async updateProfile(profile: ProfileDTO) {
-		const { error } = await this.supabase
+	async updateProfile(profile: ProfileUpdate, avatarImage?: Blob) {
+		if (avatarImage == null || avatarImage.length <= 0) {
+			return await this.#updateProfile(profile);
+		}
+
+		const { url: avatar_url } = await this.#uploadAvatar(avatarImage);
+		return await this.#updateProfile({ ...profile, avatar_url });
+	}
+
+	async #updateProfile(profile: ProfileUpdate) {
+		const { error, data } = await this.supabase
 			.from('profiles')
-			.update(omit(profile, ['avatar']))
+			.update(profile)
 			.eq('id', this.session.user.id);
 
 		if (error != null) {
 			throw httpError(500, 'Error updating profile');
 		}
 
-		if (profile.avatar.size > 0) {
-			await this.avatarService.updateAvatar(profile.avatar);
-		}
+		return data;
+	}
+
+	#uploadAvatar(image: Blob) {
+		return this.imageService.uploadImage(image, 'avatar');
 	}
 }

@@ -14,11 +14,14 @@ export const ProfileDTOSchema = z
 			.optional()
 			.or(z.literal('').transform(() => undefined)),
 		avatar: z
-			.any()
+			.instanceof(Blob)
+			.transform((file) => {
+				if (file.size > 0) return file as File;
+				return undefined;
+			})
 			.optional()
-			.refine((file: Blob) => file.size != null && file.type != null, 'Invalid file')
 			.describe('Avatar')
 	})
 	.describe('Profile DTO');
 
-export type ProfileDTO = z.infer<typeof ProfileDTOSchema>;
+export type ProfileDTO = z.input<typeof ProfileDTOSchema>;
