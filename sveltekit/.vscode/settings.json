@@ -3,6 +3,5 @@
 	"css.lint.unknownAtRules": "ignore",
 	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
-	"testing.automaticallyOpenPeekView": "never"
+	}
 }

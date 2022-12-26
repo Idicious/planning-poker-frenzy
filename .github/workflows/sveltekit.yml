@@ -34,6 +34,9 @@ jobs:
         env:
           PUBLIC_SUPABASE_ANON_KEY: mock_key
           PUBLIC_SUPABASE_URL: http://mock_url
+          IMAGEKIT_PUBLIC_KEY: imagekit_pub
+          IMAGEKIT_PRIVATE_KEY: imagekit_priv
+          IMAGEKIT_URL_ENDPOINT: imagekit_endpoint
 
   test:
     runs-on: ubuntu-latest
@@ -46,6 +49,9 @@ jobs:
         env:
           PUBLIC_SUPABASE_ANON_KEY: mock_key
           PUBLIC_SUPABASE_URL: http://mock_url
+          IMAGEKIT_PUBLIC_KEY: imagekit_pub
+          IMAGEKIT_PRIVATE_KEY: imagekit_priv
+          IMAGEKIT_URL_ENDPOINT: imagekit_endpoint
 
   e2e:
     runs-on: ubuntu-latest
@@ -60,3 +66,6 @@ jobs:
         env:
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          IMAGEKIT_PUBLIC_KEY: ${{ secrets.IMAGEKIT_PUBLIC_KEY }}
+          IMAGEKIT_PRIVATE_KEY: ${{ secrets.IMAGEKIT_PRIVATE_KEY }}
+          IMAGEKIT_URL_ENDPOINT: ${{ secrets.IMAGEKIT_URL_ENDPOINT }}
