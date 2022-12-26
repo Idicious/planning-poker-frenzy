@@ -10,8 +10,8 @@
 		"sourceMap": true,
 		"strict": true,
 		"types": ["vitest/globals", "reflect-metadata"],
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//
