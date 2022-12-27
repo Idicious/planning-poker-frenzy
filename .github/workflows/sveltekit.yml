@@ -60,9 +60,11 @@ jobs:
       - name: SvelteKit setup
         uses: ./.github/actions/sveltekit-setup
       - name: Install playwright dependencies
-        run: pnpm exec playwright install --with-deps chromium
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          pnpm i -g supabase
       - name: Run playwright tests
-        run: pnpm playwright test --browser chromium
+        run: pnpm test:e2e
         env:
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
