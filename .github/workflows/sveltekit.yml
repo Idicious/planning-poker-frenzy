@@ -60,9 +60,7 @@ jobs:
       - name: SvelteKit setup
         uses: ./.github/actions/sveltekit-setup
       - name: Install playwright dependencies
-        run: |
-          pnpm exec playwright install --with-deps chromium
-          npm i -g supabase
+        run: pnpm exec playwright install --with-deps
       - name: Run playwright tests
         run: pnpm test:e2e
         env:
