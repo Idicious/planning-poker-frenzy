@@ -62,7 +62,7 @@ jobs:
       - name: Install playwright dependencies
         run: |
           pnpm exec playwright install --with-deps chromium
-          pnpm i -g supabase
+          npm i -g supabase
       - name: Run playwright tests
         run: pnpm test:e2e
         env:
