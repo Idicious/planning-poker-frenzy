@@ -14,8 +14,8 @@
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
 		"db:seed": "ts-node-esm supabase/seed.ts",
-		"reset:db": "supabase stop && supabase start && pnpm db:seed",
-		"test:e2e": "pnpm reset:db && playwright test"
+		"db:reset": "supabase stop && supabase start && pnpm db:seed",
+		"test:e2e": "pnpm db:reset && playwright test"
 	},
 	"engines": {
 		"node": "^18.12.1"
