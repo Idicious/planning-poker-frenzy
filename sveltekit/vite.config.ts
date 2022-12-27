@@ -8,6 +8,10 @@ export default defineConfig({
 	define: {
 		'import.meta.env.VERCEL_ANALYTICS_ID': JSON.stringify(process.env.VERCEL_ANALYTICS_ID)
 	},
+	preview: {
+		port: 5173,
+		strictPort: true
+	},
 	test: {
 		globals: true,
 		environment: 'happy-dom',

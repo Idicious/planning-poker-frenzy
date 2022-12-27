@@ -5,17 +5,30 @@
 	import Fa from 'svelte-fa';
 
 	export let email = '';
+	export let password = '';
 	export let authError = false;
 
 	async function handleLogin() {
-		const { error } = await supabaseClient.auth.signInWithOtp({
-			email,
-			options: { emailRedirectTo: window.location.origin }
-		});
+		if (password === '') {
+			const { error } = await supabaseClient.auth.signInWithOtp({
+				email,
+				options: { emailRedirectTo: window.location.origin }
+			});
 
-		if (error) {
-			authError = true;
-			return;
+			if (error) {
+				authError = true;
+				return;
+			}
+		} else {
+			const { error } = await supabaseClient.auth.signInWithPassword({
+				email,
+				password
+			});
+
+			if (error) {
+				authError = true;
+				return;
+			}
 		}
 
 		await goto('/');
@@ -52,6 +65,7 @@
 	<section class="flex flex-col justify-center">
 		<h2 class="text-2xl text-center">Email</h2>
 		<form on:submit|preventDefault={handleLogin}>
+			<label for="email">Username</label>
 			<input
 				class="block border-solid px-3 py-2 rounded border-2 border-black min-w-full mb-3"
 				type="email"
@@ -60,8 +74,16 @@
 				id="email"
 				bind:value={email}
 			/>
+			<label for="password">Password</label>
+			<input
+				class="block border-solid px-3 py-2 rounded border-2 border-black min-w-full mb-3"
+				type="password"
+				name="password"
+				id="password"
+				bind:value={password}
+			/>
 			<div class="flex">
-				<button class="btn btn-primary" type="submit">Login</button>
+				<button name="login" class="btn btn-primary" type="submit">Login</button>
 				{#if authError}
 					<div class="text-red-600 ml-3">Something went wrong</div>
 				{/if}
