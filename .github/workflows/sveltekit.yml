@@ -57,6 +57,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.27.8
       - name: SvelteKit setup
         uses: ./.github/actions/sveltekit-setup
       - name: Install playwright dependencies
