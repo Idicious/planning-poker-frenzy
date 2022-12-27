@@ -9,3 +9,8 @@ test('profile page works', async ({ page }) => {
 	await page.goto('/user/profile');
 	expect(await page.title()).toBe('Profile');
 });
+
+test('profile edit page works', async ({ page }) => {
+	await page.goto('/user/profile/edit');
+	expect(await page.title()).toBe('Edit Profile');
+});
