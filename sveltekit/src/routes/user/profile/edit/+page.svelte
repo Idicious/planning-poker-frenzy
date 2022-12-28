@@ -1,5 +1,7 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
+	import FileInput from '$lib/components/form/FileInput.svelte';
+	import TextInput from '$lib/components/form/TextInput.svelte';
+	import Card from '$lib/components/layout/Card.svelte';
 	import { applyFormActionResponse } from '$lib/forms/actions';
 	import { ProfileDTOSchema, type ProfileDTO } from '$lib/profile/schemas';
 	import { validator } from '@felte/validator-zod';
@@ -13,12 +15,13 @@
 		form: profileForm,
 		data: formData,
 		errors: clientErrors,
-		touched
+		touched: formTouched
 	} = createForm<ProfileDTO>({
 		extend: validator({ schema: ProfileDTOSchema }),
 		onSuccess: applyFormActionResponse
 	});
 
+	$: touched = $formTouched;
 	$: errors = form?.errors ?? $clientErrors;
 	$: initialData = { ...data, ...form };
 
@@ -37,32 +40,28 @@
 	/>
 	<form use:profileForm method="POST" enctype="multipart/form-data">
 		<div class="py-2">
-			<label for="file" class="block">Avatar</label>
-			<input type="file" name="avatar" accept="image/*" />
+			<FileInput name="avatar" label="Avatar" accept="image/*" />
 		</div>
 		<div class="py-2">
-			<label for="username">Username</label>
-			<input
-				class="block border-solid px-3 py-2 rounded border-2 min-w-full"
-				placeholder="Username"
+			<TextInput
 				name="username"
 				value={initialData.username}
+				label="Username"
+				placeholder="Username"
+				touched={touched.username}
+				errors={errors.username}
 			/>
-			{#if $touched.username && errors?.username}
-				<p class="text-red-600 text-sm">{errors.username[0]}</p>
-			{/if}
 		</div>
 		<div class="py-2 mb-2">
-			<label for="website">Website</label>
-			<input
-				class="block border-solid px-3 py-2 rounded border-2 min-w-full"
-				placeholder="Website"
+			<TextInput
 				name="website"
 				value={initialData.website}
+				label="Website"
+				type="url"
+				placeholder="https://example.com"
+				touched={touched.website}
+				errors={errors.website}
 			/>
-			{#if errors?.website}
-				<p class="text-red-600 text-sm">{errors.website[0]}</p>
-			{/if}
 		</div>
 
 		<button class="btn btn-primary" type="submit">Update</button>

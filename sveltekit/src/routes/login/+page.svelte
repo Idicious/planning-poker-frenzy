@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import TextInput from '$lib/components/form/TextInput.svelte';
+	import Card from '$lib/components/layout/Card.svelte';
 	import { supabaseClient } from '$lib/db';
 	import { faGithub } from '@fortawesome/free-brands-svg-icons';
 	import Fa from 'svelte-fa';
@@ -41,7 +43,7 @@
 	<title>Login</title>
 </svelte:head>
 
-<div class="shadow-lg p-3 mt-3">
+<Card>
 	<section class="flex flex-col items-center mb-6">
 		<h2 class="text-2xl text-center">Social logins</h2>
 		<button class="btn btn-primary w-full text-center" on:click={handleGithub}>
@@ -53,22 +55,20 @@
 	<section class="flex flex-col justify-center">
 		<h2 class="text-2xl text-center">Email</h2>
 		<form on:submit|preventDefault={handleLogin}>
-			<label for="email">Username</label>
-			<input
-				class="block border-solid px-3 py-2 rounded border-2 border-black min-w-full mb-3"
-				type="email"
-				placeholder="Email"
-				name="email"
-				id="email"
+			<TextInput
 				bind:value={email}
+				label="Email"
+				name="email"
+				type="email"
+				placeholder="user@email.com"
+				autocomplete="username"
 			/>
-			<label for="password">Password</label>
-			<input
-				class="block border-solid px-3 py-2 rounded border-2 border-black min-w-full mb-3"
-				type="password"
-				name="password"
-				id="password"
+			<TextInput
 				bind:value={password}
+				label="Password"
+				name="password"
+				type="password"
+				autocomplete="current-password"
 			/>
 			<div class="flex">
 				<button name="login" class="btn btn-primary" type="submit">Login</button>
@@ -78,4 +78,4 @@
 			</div>
 		</form>
 	</section>
-</div>
+</Card>

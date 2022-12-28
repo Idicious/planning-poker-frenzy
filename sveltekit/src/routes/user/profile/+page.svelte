@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/Card.svelte';
+	import Card from '$lib/components/layout/Card.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
