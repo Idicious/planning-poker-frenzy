@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: ["main"]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 defaults:
   run:
     working-directory: ./sveltekit
@@ -57,10 +61,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.27.8
       - name: SvelteKit setup
         uses: ./.github/actions/sveltekit-setup
       - name: Install playwright dependencies
         run: pnpm exec playwright install --with-deps chromium
+      - name: Prepare database
+        run: |
+          pnpm supabase start
+          pnpm db:seed
+        env:
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
       - name: Run playwright tests
         run: pnpm playwright test --browser chromium
         env:

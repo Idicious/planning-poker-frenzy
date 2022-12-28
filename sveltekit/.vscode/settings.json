@@ -3,5 +3,18 @@
 	"css.lint.unknownAtRules": "ignore",
 	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+	},
+	"sqltools.connections": [
+		{
+			"previewLimit": 50,
+			"server": "localhost",
+			"port": 54322,
+			"driver": "PostgreSQL",
+			"name": "supabase",
+			"database": "postgres",
+			"username": "postgres",
+			"password": "postgres"
+		}
+	],
+	"testing.automaticallyOpenPeekView": "never"
 }

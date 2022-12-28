@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-	<title>Profile</title>
+	<title>Edit Profile</title>
 </svelte:head>
 
 {#if form?.success}

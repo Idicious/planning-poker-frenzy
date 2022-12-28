@@ -8,6 +8,7 @@ coverage
 .env
 .env.*
 !.env.example
+e2e/storageState.json
 
 # Ignore files for PNPM, NPM and YARN
 pnpm-lock.yaml

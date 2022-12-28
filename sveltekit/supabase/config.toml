@@ -19,7 +19,7 @@ max_rows = 1000
 port = 54322
 # The database major version to use. This has to be the same as your remote database's. Run `SHOW
 # server_version;` on the remote database to check.
-major_version = 14
+major_version = 15
 
 [studio]
 # Port to use for Supabase Studio.
@@ -57,4 +57,3 @@ enable_signup = true
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
 enable_confirmations = false
-
