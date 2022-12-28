@@ -9,26 +9,14 @@
 	export let authError = false;
 
 	async function handleLogin() {
-		if (password === '') {
-			const { error } = await supabaseClient.auth.signInWithOtp({
-				email,
-				options: { emailRedirectTo: window.location.origin }
-			});
+		const { error } = await supabaseClient.auth.signInWithPassword({
+			email,
+			password
+		});
 
-			if (error) {
-				authError = true;
-				return;
-			}
-		} else {
-			const { error } = await supabaseClient.auth.signInWithPassword({
-				email,
-				password
-			});
-
-			if (error) {
-				authError = true;
-				return;
-			}
+		if (error) {
+			authError = true;
+			return;
 		}
 
 		await goto('/');
