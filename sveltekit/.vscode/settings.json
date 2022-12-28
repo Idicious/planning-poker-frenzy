@@ -15,5 +15,6 @@
 			"username": "postgres",
 			"password": "postgres"
 		}
-	]
+	],
+	"testing.automaticallyOpenPeekView": "never"
 }
