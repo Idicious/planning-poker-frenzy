@@ -12,7 +12,7 @@ export const ProfileDTOSchema = z
 			.describe('Website')
 			.url({ message: 'Invalid website URL' })
 			.optional()
-			.or(z.literal('').transform(() => undefined)),
+			.or(z.literal('').transform(() => null)),
 		avatar: z
 			.instanceof(Blob)
 			.transform((file) => {

@@ -15,17 +15,17 @@
 		form: profileForm,
 		data: formData,
 		errors: clientErrors,
-		touched: formTouched
+		touched
 	} = createForm<ProfileDTO>({
 		extend: validator({ schema: ProfileDTOSchema }),
 		onSuccess: applyFormActionResponse
 	});
 
-	$: touched = $formTouched;
-	$: errors = form?.errors ?? $clientErrors;
 	$: initialData = { ...data, ...form };
+	$: errors = form?.errors ?? $clientErrors;
+	$: selectedImage = $formData.avatar;
 
-	$: selectedFileUrl = $formData.avatar ? URL.createObjectURL($formData.avatar) : null;
+	$: selectedFileUrl = selectedImage ? URL.createObjectURL(selectedImage) : null;
 </script>
 
 <svelte:head>
@@ -45,21 +45,21 @@
 		<div class="py-2">
 			<TextInput
 				name="username"
-				value={initialData.username}
+				value={initialData.username ?? ''}
 				label="Username"
 				placeholder="Username"
-				touched={touched.username}
+				touched={$touched.username}
 				errors={errors.username}
 			/>
 		</div>
 		<div class="py-2 mb-2">
 			<TextInput
 				name="website"
-				value={initialData.website}
+				value={initialData.website ?? ''}
 				label="Website"
 				type="url"
 				placeholder="https://example.com"
-				touched={touched.website}
+				touched={$touched.website}
 				errors={errors.website}
 			/>
 		</div>

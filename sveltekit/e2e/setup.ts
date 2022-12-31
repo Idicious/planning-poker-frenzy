@@ -6,7 +6,7 @@ export default async (_config: PlaywrightTestConfig) => {
 
 	await page.goto('http://localhost:5173/login');
 
-	await page.getByLabel('username').fill('user@localhost');
+	await page.getByLabel('email').fill('user@localhost');
 	await page.getByLabel('password').fill('password');
 
 	await page.getByRole('button', { name: 'login' }).click();

@@ -3,30 +3,32 @@
 
 	export let type: 'text' | 'password' | 'email' | 'tel' | 'url' = 'text';
 	export let name: string;
-	export let label: string;
-	export let value: string | null | undefined;
+	export let label: string | undefined = undefined;
+	export let value: string | null | undefined = undefined;
 	export let placeholder: string | undefined = undefined;
 	export let autocomplete: string | undefined = undefined;
+	export let required = false;
 
 	export let touched = false;
 	export let errors: string[] | null | undefined = undefined;
 
-	$: _value = value ?? '';
-
-	function setType(node: HTMLInputElement) {
-		node.type = type;
+	function handleInput(e: Event & { currentTarget: HTMLInputElement }) {
+		value = e.currentTarget.value;
 	}
 </script>
 
 <label for={name}>
 	<span>{label}</span>
 	<input
-		use:setType
-		bind:value={_value}
 		class="block border-solid px-3 py-2 rounded border-2 min-w-full"
 		{autocomplete}
 		{placeholder}
 		{name}
+		id={name}
+		{type}
+		{required}
+		value={value ?? ''}
+		on:input={handleInput}
 	/>
 </label>
 
