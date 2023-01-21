@@ -6,7 +6,9 @@ import { omit } from 'lodash-es';
 
 export const load: ServerLoad = async ({ locals }) => {
 	const profileService = locals.injector.get(ProfileService);
-	return profileService.getProfile();
+	const profile = await profileService.getProfile();
+
+	return { profile };
 };
 
 export const actions: Actions = {
@@ -15,7 +17,7 @@ export const actions: Actions = {
 		const validationResult = ProfileDTOSchema.safeParse(formData);
 
 		if (!validationResult.success) {
-			return formatParseError(validationResult, omit(formData, ['avatar']));
+			return formatParseError(validationResult, omit(formData, ['avatar']), 'profile');
 		}
 
 		const { avatar, ...profile } = validationResult.data;

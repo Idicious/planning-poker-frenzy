@@ -1,9 +1,17 @@
 <script lang="ts">
 	import FileInput from '$lib/components/form/FileInput.svelte';
+	import Submit from '$lib/components/form/Submit.svelte';
 	import TextInput from '$lib/components/form/TextInput.svelte';
+	import Link from '$lib/components/general/Link.svelte';
 	import Card from '$lib/components/layout/Card.svelte';
 	import { applyFormActionResponse } from '$lib/forms/actions';
-	import { ProfileDTOSchema, type ProfileDTO } from '$lib/profile/schemas';
+	import { createImageStore } from '$lib/forms/images';
+	import {
+		ProfileDTOSchema,
+		USERNAME_MAX_LENGTH,
+		USERNAME_MIN_LENGTH,
+		type ProfileDTO
+	} from '$lib/profile/schemas';
 	import { validator } from '@felte/validator-zod';
 	import { createForm } from 'felte';
 	import type { ActionData, PageData } from './$types';
@@ -21,11 +29,14 @@
 		onSuccess: applyFormActionResponse
 	});
 
-	$: initialData = { ...data, ...form };
+	$: initialValues = form?.data ?? data.profile;
 	$: errors = form?.errors ?? $clientErrors;
 	$: selectedImage = $formData.avatar;
 
-	$: selectedFileUrl = selectedImage ? URL.createObjectURL(selectedImage) : null;
+	const imageStore = createImageStore();
+	$: if (selectedImage) {
+		imageStore.set(selectedImage);
+	}
 </script>
 
 <svelte:head>
@@ -34,7 +45,7 @@
 
 <Card>
 	<img
-		src={selectedFileUrl ?? data.avatar_url}
+		src={$imageStore ?? data.profile.avatar_url}
 		alt="profile_picture"
 		class="w-64 h-64 rounded-full object-cover mx-auto"
 	/>
@@ -45,26 +56,29 @@
 		<div class="py-2">
 			<TextInput
 				name="username"
-				value={initialData.username ?? ''}
 				label="Username"
 				placeholder="Username"
 				touched={$touched.username}
 				errors={errors.username}
+				required
+				value={initialValues.username}
+				minlength={USERNAME_MIN_LENGTH}
+				maxlength={USERNAME_MAX_LENGTH}
 			/>
 		</div>
 		<div class="py-2 mb-2">
 			<TextInput
 				name="website"
-				value={initialData.website ?? ''}
 				label="Website"
 				type="url"
 				placeholder="https://example.com"
+				value={initialValues.website}
 				touched={$touched.website}
 				errors={errors.website}
 			/>
 		</div>
 
-		<button class="btn btn-primary" type="submit">Update</button>
-		<a class="link" href="/user/profile">Cancel</a>
+		<Submit>Update</Submit>
+		<Link href="/user/profile">Cancel</Link>
 	</form>
 </Card>

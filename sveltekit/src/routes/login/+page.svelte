@@ -1,12 +1,27 @@
 <script lang="ts">
-	import SocialLoginForm from './SocialLoginForm.svelte';
-
-	import { enhance } from '$app/forms';
+	import { SignInDTOSchema, type SignInDTO } from '$lib/auth/schemas';
 	import { Submit, TextInput } from '$lib/components/form';
 	import { Card } from '$lib/components/layout';
+	import { applyFormActionResponse } from '$lib/forms/actions';
+	import type { TaggedActionData } from '$lib/forms/validation';
+	import { validator } from '@felte/validator-zod';
+	import { createForm } from 'felte';
 	import type { ActionData } from './$types';
+	import SocialLoginForm from './SocialLoginForm.svelte';
 
 	export let form: ActionData;
+
+	const {
+		form: signInForm,
+		errors: clientErrors,
+		touched
+	} = createForm<SignInDTO>({
+		extend: validator({ schema: SignInDTOSchema }),
+		onSuccess: applyFormActionResponse
+	});
+
+	type LoginActionData = TaggedActionData<'login', ActionData>;
+	$: errors = (form as LoginActionData)?.errors ?? $clientErrors;
 </script>
 
 <svelte:head>
@@ -23,7 +38,7 @@
 			<div class="text-red-600 ml-3">Something went wrong</div>
 		{/if}
 
-		<form method="POST" action="?/login" use:enhance>
+		<form method="POST" action="?/login" use:signInForm>
 			<div class="mb-3">
 				<TextInput
 					label="Email"
@@ -32,6 +47,8 @@
 					placeholder="user@email.com"
 					autocomplete="username"
 					required
+					errors={errors?.email}
+					touched={$touched.email}
 				/>
 			</div>
 			<div class="mb-3">
@@ -41,6 +58,9 @@
 					type="password"
 					autocomplete="current-password"
 					required
+					minlength={SignInDTOSchema.shape.password.minLength}
+					errors={errors?.password}
+					touched={$touched.password}
 				/>
 			</div>
 			<Submit>Login</Submit>

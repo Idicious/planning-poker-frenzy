@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Link from '$lib/components/general/Link.svelte';
 	import Card from '$lib/components/layout/Card.svelte';
 	import type { PageData } from './$types';
 
@@ -24,5 +25,5 @@
 		{#if email}<p class="font-light text-gray-500 mb-3">{email}</p>{/if}
 		{#if data.website}<a class="link" href={data.website}>{data.website}</a>{/if}
 	</div>
-	<a class="link" href="/user/profile/edit">Edit</a>
+	<Link href="/user/profile/edit">Edit</Link>
 </Card>
