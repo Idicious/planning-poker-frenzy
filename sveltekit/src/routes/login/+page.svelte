@@ -2,7 +2,7 @@
 	import { SignInDTOSchema, type SignInDTO } from '$lib/auth/schemas';
 	import { Submit, TextInput } from '$lib/components/form';
 	import { Card } from '$lib/components/layout';
-	import { applyFormActionResponse } from '$lib/forms/actions';
+	import { applyFormActionResponse, applyFormErrorResponse } from '$lib/forms/actions';
 	import type { TaggedActionData } from '$lib/forms/validation';
 	import { validator } from '@felte/validator-zod';
 	import { createForm } from 'felte';
@@ -17,7 +17,8 @@
 		touched
 	} = createForm<SignInDTO>({
 		extend: validator({ schema: SignInDTOSchema }),
-		onSuccess: applyFormActionResponse
+		onSuccess: applyFormActionResponse,
+		onError: applyFormErrorResponse
 	});
 
 	type LoginActionData = TaggedActionData<'login', ActionData>;

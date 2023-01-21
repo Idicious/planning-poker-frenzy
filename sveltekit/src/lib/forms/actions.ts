@@ -1,5 +1,6 @@
-import { applyAction } from '$app/forms';
+import { applyAction, deserialize } from '$app/forms';
 import type { ActionResult } from '@sveltejs/kit';
+import { FelteSubmitError } from 'felte';
 
 /**
  * Can be used as a handler for felte's `onSubmit` prop when used with form actions.
@@ -12,6 +13,21 @@ export async function applyFormActionResponse(response: unknown) {
 		throw new Error('Unexpected response');
 	}
 
-	const actionResult = (await response.json()) as ActionResult;
+	const actionResult = await response.text();
+	return applyAction(deserialize(actionResult));
+}
+
+/**
+ * Can be used as a handler for felte's `onSubmit` prop when used with form actions.
+ *
+ * @param response
+ * @returns
+ */
+export async function applyFormErrorResponse(error: unknown) {
+	if (!(error instanceof FelteSubmitError)) {
+		throw new Error('Unexpected response');
+	}
+
+	const actionResult = (await error.response.json()) as ActionResult;
 	return applyAction(actionResult);
 }

@@ -1,11 +1,3 @@
-import { z } from 'zod';
-
-export const emptyStringToUndefined = z.literal('').transform(() => undefined);
-
-export function asOptionalField<T extends z.ZodTypeAny>(schema: T) {
-	return schema.optional().or(emptyStringToUndefined);
-}
-
 export function removeEmptyFile(file: Blob) {
 	if (file.size > 0) return file;
 	return undefined;

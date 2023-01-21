@@ -4,7 +4,7 @@
 	import TextInput from '$lib/components/form/TextInput.svelte';
 	import Link from '$lib/components/general/Link.svelte';
 	import Card from '$lib/components/layout/Card.svelte';
-	import { applyFormActionResponse } from '$lib/forms/actions';
+	import { applyFormActionResponse, applyFormErrorResponse } from '$lib/forms/actions';
 	import { createImageStore } from '$lib/forms/images';
 	import {
 		ProfileDTOSchema,
@@ -26,7 +26,8 @@
 		touched
 	} = createForm<ProfileDTO>({
 		extend: validator({ schema: ProfileDTOSchema }),
-		onSuccess: applyFormActionResponse
+		onSuccess: applyFormActionResponse,
+		onError: applyFormErrorResponse
 	});
 
 	$: initialValues = form?.data ?? data.profile;
