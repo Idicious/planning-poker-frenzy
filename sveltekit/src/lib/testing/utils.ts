@@ -6,5 +6,6 @@ export type BasicMock<T> = { [K in keyof T]: ReturnType<typeof vi.fn> };
  * @returns
  */
 export function basicMocked<T>(obj: T): BasicMock<T> {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	return obj as any;
 }

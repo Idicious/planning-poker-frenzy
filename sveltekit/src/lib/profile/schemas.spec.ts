@@ -39,4 +39,16 @@ describe('Profile Schemas', () => {
 			avatar: expect.objectContaining({ type: 'test' })
 		});
 	});
+
+	test('it is valid when url is empty', () => {
+		const result = ProfileDTOSchema.parse({
+			username: 'username',
+			website: ''
+		});
+
+		expect(result).toEqual({
+			username: 'username',
+			website: ''
+		});
+	});
 });

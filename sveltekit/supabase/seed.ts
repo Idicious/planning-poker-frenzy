@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import type { Database } from '../src/lib/generated-db-types';
 
 dotenv.config();
 
@@ -10,12 +11,12 @@ if (supabaseUrl == null || supabaseKey == null) {
 	throw new Error('Missing environment variables');
 }
 
-const client = createClient(supabaseUrl, supabaseKey);
+const client = createClient<Database>(supabaseUrl, supabaseKey);
 
 async function seed() {
 	// Insert default user
 	const { error: defaultUserError, data: defaultUser } = await client.auth.admin.createUser({
-		email: 'user@localhost',
+		email: 'user@localhost.dev',
 		password: 'password',
 		email_confirm: true
 	});
@@ -23,7 +24,9 @@ async function seed() {
 	if (defaultUserError) throw defaultUserError;
 
 	// Insert user profile
-	const { error: profileError } = await client.from('profiles').insert({ id: defaultUser.user.id });
+	const { error: profileError } = await client
+		.from('profiles')
+		.insert({ id: defaultUser.user.id, username: 'user', website: 'https://localhost.dev' });
 
 	if (profileError) throw profileError;
 }

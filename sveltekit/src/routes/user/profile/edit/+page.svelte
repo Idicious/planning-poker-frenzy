@@ -1,78 +1,85 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { enhance } from '$app/forms';
-	import Card from '$lib/components/Card.svelte';
-	import { createTouchTracking } from '$lib/forms/trackTouched';
-	import { createValidator } from '$lib/forms/validation';
-	import { ProfileDTOSchema, type ProfileDTO } from '$lib/profile/schemas';
+	import FileInput from '$lib/components/form/FileInput.svelte';
+	import Submit from '$lib/components/form/Submit.svelte';
+	import TextInput from '$lib/components/form/TextInput.svelte';
+	import Link from '$lib/components/general/Link.svelte';
+	import Card from '$lib/components/layout/Card.svelte';
+	import { applyFormActionResponse, applyFormErrorResponse } from '$lib/forms/actions';
+	import { createImageStore } from '$lib/forms/images';
+	import {
+		ProfileDTOSchema,
+		USERNAME_MAX_LENGTH,
+		USERNAME_MIN_LENGTH,
+		type ProfileDTO
+	} from '$lib/profile/schemas';
+	import { validator } from '@felte/validator-zod';
+	import { createForm } from 'felte';
 	import type { ActionData, PageData } from './$types';
 
 	export let data: PageData;
 	export let form: ActionData;
 
-	const validateForm = createValidator(ProfileDTOSchema);
-	const { trackTouched, touched } = createTouchTracking<ProfileDTO>({
-		username: !browser,
-		website: !browser
+	const {
+		form: profileForm,
+		data: formData,
+		errors: clientErrors,
+		touched
+	} = createForm<ProfileDTO>({
+		extend: validator({ schema: ProfileDTOSchema }),
+		onSuccess: applyFormActionResponse,
+		onError: applyFormErrorResponse
 	});
 
-	let files: FileList;
-	$: selectedFileUrl = files?.[0] ? URL.createObjectURL(files[0]) : null;
+	$: initialValues = form?.data ?? data.profile;
+	$: errors = form?.errors ?? $clientErrors;
+	$: selectedImage = $formData.avatar;
+
+	const imageStore = createImageStore();
+	$: if (selectedImage) {
+		imageStore.set(selectedImage);
+	}
 </script>
 
 <svelte:head>
 	<title>Edit Profile</title>
 </svelte:head>
 
-{#if form?.success}
-	<p class="text-green-500">Profile updated!</p>
-{/if}
-
 <Card>
 	<img
-		src={selectedFileUrl ?? data.avatar_url}
+		src={$imageStore ?? data.profile.avatar_url}
 		alt="profile_picture"
 		class="w-64 h-64 rounded-full object-cover mx-auto"
 	/>
-	<form
-		method="POST"
-		enctype="multipart/form-data"
-		use:trackTouched
-		on:input={validateForm}
-		use:enhance={({ form, cancel }) => {
-			validateForm(form, cancel);
-		}}
-	>
+	<form use:profileForm method="POST" enctype="multipart/form-data">
 		<div class="py-2">
-			<label for="file" class="block">Avatar</label>
-			<input type="file" name="avatar" accept="image/*" bind:files />
+			<FileInput name="avatar" label="Avatar" accept="image/*" />
 		</div>
 		<div class="py-2">
-			<label for="username">Username</label>
-			<input
-				class="block border-solid px-3 py-2 rounded border-2 min-w-full"
-				placeholder="Username"
+			<TextInput
 				name="username"
-				value={form?.username ?? data.username}
+				label="Username"
+				placeholder="Username"
+				touched={$touched.username}
+				errors={errors.username}
+				required
+				value={initialValues.username}
+				minlength={USERNAME_MIN_LENGTH}
+				maxlength={USERNAME_MAX_LENGTH}
 			/>
-			{#if $touched.username && form?.errors?.username}
-				<p class="text-red-600 text-sm">{form.errors.username[0]}</p>
-			{/if}
 		</div>
 		<div class="py-2 mb-2">
-			<label for="website">Website</label>
-			<input
-				class="block border-solid px-3 py-2 rounded border-2 min-w-full"
-				placeholder="Website"
+			<TextInput
 				name="website"
-				value={form?.website ?? data.website}
+				label="Website"
+				type="url"
+				placeholder="https://example.com"
+				value={initialValues.website}
+				touched={$touched.website}
+				errors={errors.website}
 			/>
-			{#if form?.errors?.website}
-				<p class="text-red-600 text-sm">{form.errors.website[0]}</p>
-			{/if}
 		</div>
 
-		<button class="btn btn-primary" type="submit">Update</button>
-		<a class="link" href="/user/profile">Cancel</a>
+		<Submit>Update</Submit>
+		<Link href="/user/profile">Cancel</Link>
 	</form>
 </Card>

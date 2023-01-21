@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import Card from '$lib/components/Card.svelte';
+	import Card from '$lib/components/layout/Card.svelte';
 	import { createOnlineUsersStore } from '$lib/stores/online-users';
 	import { onDestroy } from 'svelte';
 	import type { PageData } from './$types';

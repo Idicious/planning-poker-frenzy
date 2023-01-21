@@ -9,6 +9,10 @@ declare namespace App {
 	}
 	interface Locals {
 		injector: import('inversify').Container;
+		session: import('@supabase/supabase-js').Session | null;
+		supabase: import('@supabase/supabase-js').SupabaseClient<
+			import('./lib/generated-db-types').Database
+		>;
 	}
 	interface PageData {
 		session: import('@supabase/supabase-js').Session | null;
