@@ -5,11 +5,8 @@ import type { z } from 'zod';
 import type { TaggedActionData } from '$lib/forms/validation';
 
 type RetType<T extends Record<string, unknown> | undefined> = ReturnType<typeof fail<T>>;
-type FormData = {
-	[key: string]: string | Blob;
-};
 
-type FailData<TSchema> = {
+export type FormData<TSchema = unknown> = {
 	[K in keyof TSchema]: TSchema[K] extends Blob ? Blob : string;
 };
 
@@ -26,7 +23,7 @@ export function formatParseError<TSchema>(
 	tag: 'validation-error';
 	success: false;
 	errors: z.inferFlattenedErrors<z.ZodType<TSchema>>['fieldErrors'];
-	data: FailData<TSchema>;
+	data: FormData<TSchema>;
 }>;
 export function formatParseError<TSchema, TTag extends string>(
 	parseResult: z.SafeParseError<TSchema>,
@@ -36,7 +33,7 @@ export function formatParseError<TSchema, TTag extends string>(
 	tag: TTag;
 	success: false;
 	errors: z.inferFlattenedErrors<z.ZodType<TSchema>>['fieldErrors'];
-	data: FailData<TSchema>;
+	data: FormData<TSchema>;
 }>;
 export function formatParseError(
 	parseResult: z.SafeParseError<unknown>,

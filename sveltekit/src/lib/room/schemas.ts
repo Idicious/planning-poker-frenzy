@@ -6,3 +6,4 @@ export const RoomDTOSchema = z.object({
 });
 
 export const CreateRoomDTOSchema = RoomDTOSchema.omit({ id: true });
+export type CreateRoomDTO = z.infer<typeof CreateRoomDTOSchema>;

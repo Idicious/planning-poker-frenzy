@@ -22,7 +22,7 @@
 	}
 </script>
 
-<label for={id}>
+<label class="block mb-3" for={id}>
 	<span>{label}</span>
 	<input
 		class="block border-solid px-3 py-2 rounded border-2 min-w-full"
@@ -38,8 +38,7 @@
 		{pattern}
 		on:input={handleInput}
 	/>
+	{#if (touched || !browser) && errors?.[0]}
+		<span class="text-red-500 text-sm">{errors[0]}</span>
+	{/if}
 </label>
-
-{#if (touched || !browser) && errors?.[0]}
-	<span class="text-red-500 text-sm">{errors[0]}</span>
-{/if}

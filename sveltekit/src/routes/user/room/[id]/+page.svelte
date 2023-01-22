@@ -13,7 +13,7 @@
 	const username = data.session?.user.email ?? 'Anonymous';
 
 	const { votesRevealed, leave, currentVote, onlineUsers, setVote, revealVotes, host } =
-		createOnlineUsersStore($page.params.id, username, data.avatar_url);
+		createOnlineUsersStore($page.params.id, username, data.avatarUrl);
 
 	onDestroy(() => {
 		leave();

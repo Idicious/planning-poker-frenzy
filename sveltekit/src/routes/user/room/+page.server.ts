@@ -1,4 +1,4 @@
-import { RoomService } from '$lib/room';
+import { RoomService } from '$lib/room/room.service';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
