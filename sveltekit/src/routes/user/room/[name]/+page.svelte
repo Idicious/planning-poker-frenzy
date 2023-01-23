@@ -23,18 +23,18 @@
 	<title>Room {data.room.name}</title>
 </svelte:head>
 
-<!-- <aside class="absolute left-0 top-0 md:w-80 w-full bg-white h-full p-3 z-100">
+<aside class="absolute left-0 top-0 md:w-80 w-full bg-white h-full p-3 z-100">
 	<section class="flex flex-col">
 		<h1 class="text-lg font-bold">Polls</h1>
 		<ul class="flex flex-col">
 			{#each data.room.polls as poll}
 				<li>
-					<a href="/poll">{poll.name}</a>
+					<a href="/poll">{poll.description}</a>
 				</li>
 			{/each}
 		</ul>
 	</section>
-</aside> -->
+</aside>
 
 <Card>
 	<UserList users={$onlineUsers} />

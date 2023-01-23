@@ -4,6 +4,7 @@ import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import { inject, injectable } from 'inversify';
 import type { CreateRoomDTO } from './schemas';
 import { error as httpError } from '@sveltejs/kit';
+import { ensureArray } from '../db-types';
 
 @injectable()
 export class RoomService {
@@ -38,7 +39,8 @@ export class RoomService {
 			throw httpError(500, 'Internal Server Error');
 		}
 
-		return data;
+		if (data == null) return null;
+		return ensureArray(data, ['polls']);
 	}
 
 	async createRoom({ name }: CreateRoomDTO) {
