@@ -3,6 +3,7 @@ import type { Database } from '$lib/generated-db-types';
 import type { Session, SupabaseClient } from '@supabase/supabase-js';
 import { inject, injectable } from 'inversify';
 import type { CreateRoomDTO } from './schemas';
+import { error as httpError } from '@sveltejs/kit';
 
 @injectable()
 export class RoomService {
@@ -19,7 +20,7 @@ export class RoomService {
 
 		if (error) {
 			console.error(error);
-			throw new Error(error.message);
+			throw httpError(500, 'Internal Server Error');
 		}
 
 		return data;
@@ -34,7 +35,7 @@ export class RoomService {
 
 		if (error) {
 			console.error(error);
-			throw new Error(error.message);
+			throw httpError(500, 'Internal Server Error');
 		}
 
 		return data;
@@ -49,7 +50,7 @@ export class RoomService {
 
 		if (error) {
 			console.error(error);
-			throw new Error(error.message);
+			throw httpError(500, 'Internal Server Error');
 		}
 
 		return data;
@@ -64,7 +65,7 @@ export class RoomService {
 
 		if (error) {
 			console.error(error);
-			throw new Error(error.message);
+			throw httpError(500, 'Internal Server Error');
 		}
 
 		return data != null;
