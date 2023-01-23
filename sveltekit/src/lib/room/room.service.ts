@@ -14,8 +14,23 @@ export class RoomService {
 	async getRooms() {
 		const { data, error } = await this.supabase
 			.from('rooms')
-			.select('*')
+			.select('id, name')
 			.eq('host_id', this.session.user.id);
+
+		if (error) {
+			console.error(error);
+			throw new Error(error.message);
+		}
+
+		return data;
+	}
+
+	async getRoom(name: string) {
+		const { data, error } = await this.supabase
+			.from('rooms')
+			.select('*, polls(*)')
+			.eq('name', name)
+			.maybeSingle();
 
 		if (error) {
 			console.error(error);

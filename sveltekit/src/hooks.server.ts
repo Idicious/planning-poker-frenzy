@@ -20,10 +20,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	container.bind(Tokens.Supabase).toConstantValue(supabaseClient);
 
 	container.load(appContainer);
-
 	event.locals.injector = container;
-	event.locals.session = session;
-	event.locals.supabase = supabaseClient;
 
 	return resolve(event);
 };
