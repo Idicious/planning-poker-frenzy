@@ -64,8 +64,8 @@ jobs:
           version: 1.27.8
       - name: Prepare database
         run: |
-          pnpm supabase start
-          pnpm db:seed
+          supabase start
+          npm run db:seed
         env:
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
