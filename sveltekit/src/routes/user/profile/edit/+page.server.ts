@@ -12,14 +12,14 @@ export const load: ServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
-		const { errors, validated, formData } = await validateFormData(request, ProfileDTOSchema);
+		const { errors, result, formData } = await validateFormData(request, ProfileDTOSchema);
 
 		if (errors) {
 			const { avatar: _, ...rest } = formData;
 			return fail(400, { errors, formData: rest });
 		}
 
-		const { avatar, ...profile } = validated;
+		const { avatar, ...profile } = result;
 
 		const profileService = locals.injector.get(ProfileService);
 		await profileService.updateProfile(profile, avatar);

@@ -26,9 +26,9 @@ export type FormData<TSchema = unknown> = {
 	[K in keyof TSchema]: TSchema[K] extends Blob ? Blob : string;
 };
 
-type ValidResult<TSchema> = { validated: TSchema; errors: null; formData: FormData<TSchema> };
+type ValidResult<TSchema> = { result: TSchema; errors: null; formData: FormData<TSchema> };
 type InvalidResult<TSchema> = {
-	validated: null;
+	result: null;
 	errors: z.inferFlattenedErrors<z.ZodType<TSchema>>['fieldErrors'];
 	formData: FormData<TSchema>;
 };
@@ -41,11 +41,11 @@ export async function validateFormData<TSchema>(
 	const parseResult = schema.safeParse(data);
 
 	if (parseResult.success) {
-		return { validated: parseResult.data, errors: null, formData: data as FormData<TSchema> };
+		return { result: parseResult.data, errors: null, formData: data as FormData<TSchema> };
 	}
 
 	return {
-		validated: null,
+		result: null,
 		errors: parseResult.error.flatten().fieldErrors,
 		formData: data as FormData<TSchema>
 	};
