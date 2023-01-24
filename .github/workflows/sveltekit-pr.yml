@@ -62,10 +62,12 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: 1.27.8
+      - name: SvelteKit setup
+        uses: ./.github/actions/sveltekit-setup
       - name: Prepare database
         run: |
-          supabase start
-          npm run db:seed
+          pnpm supabase start
+          pnpm db:seed
         env:
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
@@ -75,8 +77,6 @@ jobs:
     needs: prepare_db
     steps:
       - uses: actions/checkout@v3
-      - name: SvelteKit setup
-        uses: ./.github/actions/sveltekit-setup
       - name: Install playwright dependencies
         run: pnpm exec playwright install --with-deps chromium
       - name: Run playwright tests
