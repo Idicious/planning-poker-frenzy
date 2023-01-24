@@ -38,7 +38,7 @@
 			name="name"
 			errors={form?.errors.name ?? $errors.name}
 			touched={$touched.name}
-			value={form?.data.name}
+			value={form?.formData.name}
 		/>
 		<Submit disabled={$isValidating}>Submit</Submit>
 	</form>

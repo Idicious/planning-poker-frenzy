@@ -1,43 +1,37 @@
 import { AuthService } from '$lib/auth/auth.service';
-import {
-	SignInDTOSchema,
-	SocialDTOSchema,
-	type SignInDTO,
-	type SocialDTO
-} from '$lib/auth/schemas';
-import { formatParseError } from '$lib/schemas/format-parse-error';
-import { fail, redirect, type Actions } from '@sveltejs/kit';
+import { SignInDTOSchema, SocialDTOSchema } from '$lib/auth/schemas';
+import { validateFormData } from '$lib/forms/validation';
+import { fail, redirect } from '@sveltejs/kit';
+import type { Actions } from './$types';
 
 export const actions: Actions = {
 	login: async ({ request, locals }) => {
-		const formData = Object.fromEntries(await request.formData());
-		const parseResult = SignInDTOSchema.safeParse(formData);
+		const { errors, validated, formData } = await validateFormData(request, SignInDTOSchema);
 
-		if (!parseResult.success) {
-			return formatParseError(parseResult, formData as SignInDTO, 'login');
+		if (errors) {
+			return fail(400, { errors, formData, tag: 'login' } as const);
 		}
 
 		const authService = locals.injector.get(AuthService);
-		const { error } = await authService.signInWithPassword(parseResult.data);
+		const { error } = await authService.signInWithPassword(validated);
 
 		if (error != null) {
-			return fail(400, { authError: true } as const);
+			return fail(400, { authError: true, tag: 'login' } as const);
 		}
 
 		throw redirect(303, '/');
 	},
 	social: async ({ request, locals }) => {
-		const formData = Object.fromEntries(await request.formData());
-		const parseResult = SocialDTOSchema.safeParse(formData);
+		const { errors, validated, formData } = await validateFormData(request, SocialDTOSchema);
 
-		if (!parseResult.success) {
-			return formatParseError(parseResult, formData as SocialDTO, 'social');
+		if (errors) {
+			return fail(400, { errors, formData, tag: 'social' } as const);
 		}
 
 		const redirectTo = new URL(request.url).origin;
 		const authService = locals.injector.get(AuthService);
 
-		const { error, data } = await authService.signInWithOAuth(parseResult.data, {
+		const { error, data: signInData } = await authService.signInWithOAuth(validated, {
 			redirectTo
 		});
 
@@ -45,7 +39,7 @@ export const actions: Actions = {
 			return fail(400, { authError: true } as const);
 		}
 
-		throw redirect(303, data.url);
+		throw redirect(303, signInData.url);
 	},
 	logout: async ({ locals }) => {
 		const authService = locals.injector.get(AuthService);

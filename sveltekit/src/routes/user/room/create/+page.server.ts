@@ -1,30 +1,28 @@
+import { validateFormData } from '$lib/forms/validation';
 import { RoomService } from '$lib/room/room.service';
-import { CreateRoomDTOSchema, type CreateRoomDTO } from '$lib/room/schemas';
-import { formatParseError, type FormData } from '$lib/schemas/format-parse-error';
-import { redirect, fail } from '@sveltejs/kit';
+import { CreateRoomDTOSchema } from '$lib/room/schemas';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
-		const formData = Object.fromEntries(await request.formData());
-		const validationResult = CreateRoomDTOSchema.safeParse(formData);
+		const { errors, validated, formData } = await validateFormData(request, CreateRoomDTOSchema);
 
-		if (!validationResult.success) {
-			return formatParseError(validationResult, formData);
+		if (errors) {
+			return fail(400, { errors, formData });
 		}
 
 		const roomService = locals.injector.get(RoomService);
-		const roomExists = await roomService.roomExists(validationResult.data.name);
+		const roomExists = await roomService.roomExists(validated.name);
 
 		if (roomExists) {
 			return fail(400, {
-				success: false as const,
 				errors: { name: ['Room already exists'] },
-				data: formData as FormData<CreateRoomDTO>
+				formData
 			});
 		}
 
-		const result = await roomService.createRoom(validationResult.data);
+		const result = await roomService.createRoom(validated);
 		throw redirect(302, `/user/room/${result.name}`);
 	}
 };

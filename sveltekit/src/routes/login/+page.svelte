@@ -3,13 +3,14 @@
 	import { Submit, TextInput } from '$lib/components/form';
 	import { Card } from '$lib/components/layout';
 	import { applyFormActionResponse, applyFormErrorResponse } from '$lib/forms/actions';
-	import type { TaggedActionData } from '$lib/forms/validation';
+	import { withTag } from '$lib/forms/validation';
 	import { validator } from '@felte/validator-zod';
 	import { createForm } from 'felte';
 	import type { ActionData } from './$types';
 	import SocialLoginForm from './SocialLoginForm.svelte';
 
 	export let form: ActionData;
+	const loginForm = withTag(form, 'login');
 
 	const {
 		form: signInForm,
@@ -20,9 +21,6 @@
 		onSuccess: applyFormActionResponse,
 		onError: applyFormErrorResponse
 	});
-
-	type LoginActionData = TaggedActionData<'login', ActionData>;
-	$: errors = (form as LoginActionData)?.errors ?? $clientErrors;
 </script>
 
 <svelte:head>
@@ -48,7 +46,7 @@
 					placeholder="user@email.com"
 					autocomplete="username"
 					required
-					errors={errors?.email}
+					errors={loginForm?.errors?.email ?? $clientErrors.email}
 					touched={$touched.email}
 				/>
 			</div>
@@ -60,7 +58,7 @@
 					autocomplete="current-password"
 					required
 					minlength={SignInDTOSchema.shape.password.minLength}
-					errors={errors?.password}
+					errors={loginForm?.errors?.password ?? $clientErrors.password}
 					touched={$touched.password}
 				/>
 			</div>

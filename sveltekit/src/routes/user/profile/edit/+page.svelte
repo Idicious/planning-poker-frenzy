@@ -31,7 +31,7 @@
 		onError: applyFormErrorResponse
 	});
 
-	$: initialValues = form?.data ?? data.profile;
+	$: initialValues = form?.formData ?? data.profile;
 	$: errors = form?.errors ?? $clientErrors;
 	$: selectedImage = $formData.avatar;
 
