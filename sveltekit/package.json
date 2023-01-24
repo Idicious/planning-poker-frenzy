@@ -13,6 +13,7 @@
 		"prepare": "svelte-kit sync",
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
+		"generate-db-types": "supabase gen types typescript --local > src/lib/generated-db-types.ts",
 		"db:seed": "ts-node-esm supabase/seed.ts",
 		"db:init": "supabase start && npm run db:seed",
 		"db:reset": "supabase stop && npm run db:init",
