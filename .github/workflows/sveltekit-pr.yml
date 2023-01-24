@@ -59,24 +59,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: SvelteKit setup
+        uses: ./.github/actions/sveltekit-setup
       - uses: supabase/setup-cli@v1
         with:
           version: 1.27.8
-      - name: SvelteKit setup
-        uses: ./.github/actions/sveltekit-setup
       - name: Prepare database
-        run: |
-          pnpm supabase start
-          pnpm db:seed
-        env:
-          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: supabase start -x migra,studio
 
   e2e:
     runs-on: ubuntu-latest
     needs: prepare_db
     steps:
       - uses: actions/checkout@v3
+      - name: SvelteKit setup
+        uses: ./.github/actions/sveltekit-setup
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.27.8
+      - name: Prepare database
+        run: supabase start -x migra,studio
+      - name: Seed database
+        run: pnpm db:seed
+        env:
+          PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
       - name: Install playwright dependencies
         run: pnpm exec playwright install --with-deps chromium
       - name: Run playwright tests
@@ -93,6 +100,13 @@ jobs:
     needs: prepare_db
     steps:
       - uses: actions/checkout@v3
+      - name: SvelteKit setup
+        uses: ./.github/actions/sveltekit-setup
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.27.8
+      - name: Prepare database
+        run: supabase start -x migra,studio
       - name: Verify generated types match Postgres schema
         run: |
           supabase gen types typescript --local > src/lib/generated-db-types.ts
