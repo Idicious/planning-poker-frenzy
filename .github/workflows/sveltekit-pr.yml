@@ -15,6 +15,16 @@ defaults:
   run:
     working-directory: ./sveltekit
 
+env:
+  PUBLIC_SUPABASE_ANON_KEY: mock_key
+  PUBLIC_SUPABASE_URL: http://mock_url
+  IMAGEKIT_PUBLIC_KEY: imagekit_pub
+  IMAGEKIT_PRIVATE_KEY: imagekit_priv
+  IMAGEKIT_URL_ENDPOINT: imagekit_endpoint
+  SUPABASE_GITHUB_CLIENT_ID: ""
+  SUPABASE_GITHUB_SECRET: ""
+  SUPABASE_GITHUB_REDIRECT_URI: ""
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -33,12 +43,6 @@ jobs:
         uses: ./.github/actions/sveltekit-setup
       - name: Check application for errors
         run: pnpm check
-        env:
-          PUBLIC_SUPABASE_ANON_KEY: mock_key
-          PUBLIC_SUPABASE_URL: http://mock_url
-          IMAGEKIT_PUBLIC_KEY: imagekit_pub
-          IMAGEKIT_PRIVATE_KEY: imagekit_priv
-          IMAGEKIT_URL_ENDPOINT: imagekit_endpoint
 
   test:
     runs-on: ubuntu-latest
@@ -48,12 +52,6 @@ jobs:
         uses: ./.github/actions/sveltekit-setup
       - name: Run unit tests
         run: pnpm test:coverage
-        env:
-          PUBLIC_SUPABASE_ANON_KEY: mock_key
-          PUBLIC_SUPABASE_URL: http://mock_url
-          IMAGEKIT_PUBLIC_KEY: imagekit_pub
-          IMAGEKIT_PRIVATE_KEY: imagekit_priv
-          IMAGEKIT_URL_ENDPOINT: imagekit_endpoint
 
   e2e:
     runs-on: ubuntu-latest
