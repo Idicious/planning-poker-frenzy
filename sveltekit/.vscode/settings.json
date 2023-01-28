@@ -1,9 +1,6 @@
 {
-	"editor.defaultFormatter": "svelte.svelte-vscode",
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"css.lint.unknownAtRules": "ignore",
-	"[typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	},
 	"sqltools.connections": [
 		{
 			"previewLimit": 50,
@@ -16,5 +13,14 @@
 			"password": "postgres"
 		}
 	],
-	"testing.automaticallyOpenPeekView": "never"
+	"testing.automaticallyOpenPeekView": "never",
+	"[svelte]": {
+		"editor.defaultFormatter": "svelte.svelte-vscode"
+	},
+	"[postgres]": {
+		"editor.defaultFormatter": "bradymholt.pgformatter"
+	},
+	"files.associations": {
+		"*.sql": "postgres"
+	}
 }
