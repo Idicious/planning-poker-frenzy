@@ -1,99 +1,108 @@
-create table "public"."polls" (
-    "id" uuid not null default uuid_generate_v4(),
-    "created_at" timestamp with time zone default now(),
-    "room_id" uuid,
-    "description" text default ''::text,
-    "votes_visible" boolean not null default true
+-- rooms table
+CREATE TABLE rooms (
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    created_at timestamp with time zone DEFAULT now(),
+    name character varying NOT NULL UNIQUE,
+    host_id uuid REFERENCES profiles (id) ON DELETE CASCADE NOT NULL,
+    CONSTRAINT name_unique UNIQUE (name)
 );
 
+ALTER TABLE rooms ENABLE ROW LEVEL SECURITY;
 
-alter table "public"."polls" enable row level security;
+CREATE POLICY "Allow rooms read for authenticated users" ON rooms AS permissive
+    FOR SELECT TO authenticated
+        USING (TRUE);
 
-create table "public"."rooms" (
-    "id" uuid not null default uuid_generate_v4(),
-    "created_at" timestamp with time zone default now(),
-    "name" character varying not null,
-    "host_id" uuid not null
+CREATE POLICY "Allow rooms delete for host" ON rooms AS permissive
+    FOR DELETE TO authenticated
+        USING ((auth.uid () = host_id));
+
+CREATE POLICY "Allow rooms insert for authenticated users" ON rooms AS permissive
+    FOR INSERT TO authenticated
+        WITH CHECK (TRUE);
+
+CREATE POLICY "Allow rooms update for host" ON rooms AS permissive
+    FOR UPDATE TO authenticated
+        WITH CHECK ((auth.uid () = host_id));
+
+-- Return the host_id of a room
+CREATE FUNCTION get_host_id (room_id uuid)
+    RETURNS uuid
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    host_id uuid;
+BEGIN
+    SELECT
+        host_id INTO host_id
+    FROM
+        rooms
+    WHERE
+        id = room_id;
+    RETURN host_id;
+END;
+$$;
+
+-- polls table
+CREATE TABLE polls (
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    created_at timestamp with time zone DEFAULT now(),
+    created_by uuid REFERENCES profiles (id) ON DELETE SET NULL,
+    room_id uuid REFERENCES rooms (id) ON DELETE CASCADE NOT NULL,
+    "description" text DEFAULT ''::text,
+    votes_visible boolean NOT NULL DEFAULT TRUE
 );
 
+ALTER TABLE polls ENABLE ROW LEVEL SECURITY;
 
-alter table "public"."rooms" enable row level security;
+CREATE POLICY "Allow polls read for authenticated users" ON polls AS permissive
+    FOR SELECT TO authenticated
+        USING (TRUE);
 
-create table "public"."votes" (
-    "id" uuid not null default uuid_generate_v4(),
-    "created_at" timestamp with time zone default now(),
-    "poll_id" uuid not null,
-    "user_id" uuid not null,
-    "vote" character varying
+CREATE POLICY "Allow polls insert for authenticated users" ON polls AS permissive
+    FOR INSERT TO authenticated
+        WITH CHECK (TRUE);
+
+CREATE POLICY "Allow polls delete for user that created it" ON polls AS permissive
+    FOR DELETE TO authenticated
+        USING ((auth.uid () = created_by));
+
+CREATE POLICY "Allow polls delete for room host" ON polls AS permissive
+    FOR DELETE TO authenticated
+        USING ((auth.uid () = get_host_id (room_id)));
+
+CREATE POLICY "Allow polls update for user that created it" ON polls AS permissive
+    FOR UPDATE TO authenticated
+        WITH CHECK ((auth.uid () = created_by));
+
+CREATE POLICY "Allow polls update for room host" ON polls AS permissive
+    FOR UPDATE TO authenticated
+        WITH CHECK ((auth.uid () = get_host_id (room_id)));
+
+-- votes table
+CREATE TABLE votes (
+    id uuid PRIMARY KEY DEFAULT uuid_generate_v4 (),
+    created_at timestamp with time zone DEFAULT now(),
+    poll_id uuid REFERENCES polls (id) ON DELETE CASCADE NOT NULL,
+    user_id uuid REFERENCES profiles (id) ON DELETE CASCADE NOT NULL,
+    vote character varying
 );
 
+ALTER TABLE votes ENABLE ROW LEVEL SECURITY;
 
-alter table "public"."votes" enable row level security;
+CREATE POLICY "Allow votes read for authenticated users" ON votes AS permissive
+    FOR SELECT TO authenticated
+        USING (TRUE);
 
-alter table "public"."profiles" alter column "id" set default uuid_generate_v4();
+CREATE POLICY "Allow votes delete for user" ON votes AS permissive
+    FOR DELETE TO authenticated
+        USING ((auth.uid () = user_id));
 
-CREATE UNIQUE INDEX polls_pkey ON public.polls USING btree (id);
+CREATE POLICY "Allow votes insert for authenticated users" ON votes AS permissive
+    FOR INSERT TO authenticated
+        WITH CHECK (TRUE);
 
-CREATE UNIQUE INDEX rooms_name_key ON public.rooms USING btree (name);
-
-CREATE UNIQUE INDEX rooms_pkey ON public.rooms USING btree (id);
-
-CREATE UNIQUE INDEX votes_pkey ON public.votes USING btree (id);
-
-alter table "public"."polls" add constraint "polls_pkey" PRIMARY KEY using index "polls_pkey";
-
-alter table "public"."rooms" add constraint "rooms_pkey" PRIMARY KEY using index "rooms_pkey";
-
-alter table "public"."votes" add constraint "votes_pkey" PRIMARY KEY using index "votes_pkey";
-
-alter table "public"."polls" add constraint "polls_room_id_fkey" FOREIGN KEY (room_id) REFERENCES rooms(id) not valid;
-
-alter table "public"."polls" validate constraint "polls_room_id_fkey";
-
-alter table "public"."rooms" add constraint "rooms_host_id_fkey" FOREIGN KEY (host_id) REFERENCES profiles(id) not valid;
-
-alter table "public"."rooms" validate constraint "rooms_host_id_fkey";
-
-alter table "public"."rooms" add constraint "rooms_name_key" UNIQUE using index "rooms_name_key";
-
-alter table "public"."votes" add constraint "votes_poll_id_fkey" FOREIGN KEY (poll_id) REFERENCES polls(id) not valid;
-
-alter table "public"."votes" validate constraint "votes_poll_id_fkey";
-
-alter table "public"."votes" add constraint "votes_user_id_fkey" FOREIGN KEY (user_id) REFERENCES profiles(id) not valid;
-
-alter table "public"."votes" validate constraint "votes_user_id_fkey";
-
-create policy "Enable delete for users based on user_id"
-on "public"."rooms"
-as permissive
-for delete
-to public
-using ((auth.uid() = host_id));
-
-
-create policy "Enable insert for authenticated users only"
-on "public"."rooms"
-as permissive
-for insert
-to authenticated
-with check (true);
-
-
-create policy "Enable read access for authenticated users"
-on "public"."rooms"
-as permissive
-for select
-to authenticated
-using (true);
-
-
-create policy "Enable update for users based on user_id"
-on "public"."rooms"
-as permissive
-for update
-to authenticated
-using ((auth.uid() = host_id));
-
-
+CREATE POLICY "Allow votes update for user" ON votes AS permissive
+    FOR UPDATE TO authenticated
+        WITH CHECK ((auth.uid () = user_id));
 
