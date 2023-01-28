@@ -22,6 +22,7 @@ export class ProfileService {
 			.single();
 
 		if (error) {
+			console.error(error);
 			throw httpError(500, 'Error fetching profile');
 		}
 
@@ -44,6 +45,7 @@ export class ProfileService {
 			.eq('id', this.session.user.id);
 
 		if (error != null) {
+			console.error(error);
 			throw httpError(500, 'Error updating profile');
 		}
 
