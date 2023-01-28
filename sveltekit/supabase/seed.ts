@@ -23,12 +23,19 @@ async function seed() {
 
 	if (defaultUserError) throw defaultUserError;
 
-	// Insert user profile
+	// Update user profile
 	const { error: profileError } = await client
 		.from('profiles')
-		.insert({ id: defaultUser.user.id, username: 'user', website: 'https://localhost.dev' });
+		.upsert({ id: defaultUser.user.id, username: 'user', website: 'https://localhost.dev' });
 
 	if (profileError) throw profileError;
+
+	// Insert room
+	const { error: roomError } = await client
+		.from('rooms')
+		.insert({ host_id: defaultUser.user.id, name: 'room' });
+
+	if (roomError) throw roomError;
 }
 
 try {
