@@ -12,23 +12,26 @@ export interface Database {
       polls: {
         Row: {
           created_at: string | null
+          created_by: string | null
           description: string | null
           id: string
-          room_id: string | null
+          room_id: string
           votes_visible: boolean
         }
         Insert: {
           created_at?: string | null
+          created_by?: string | null
           description?: string | null
           id?: string
-          room_id?: string | null
+          room_id: string
           votes_visible?: boolean
         }
         Update: {
           created_at?: string | null
+          created_by?: string | null
           description?: string | null
           id?: string
-          room_id?: string | null
+          room_id?: string
           votes_visible?: boolean
         }
       }
@@ -44,7 +47,7 @@ export interface Database {
         Insert: {
           avatar_url?: string | null
           full_name?: string | null
-          id?: string
+          id: string
           updated_at?: string | null
           username?: string | null
           website?: string | null
@@ -106,7 +109,10 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_host_id: {
+        Args: { room_id: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
