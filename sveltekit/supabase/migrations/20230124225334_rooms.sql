@@ -4,7 +4,8 @@ CREATE TABLE rooms (
     created_at timestamp with time zone DEFAULT now(),
     name character varying NOT NULL UNIQUE,
     host_id uuid REFERENCES profiles (id) ON DELETE CASCADE NOT NULL,
-    CONSTRAINT name_unique UNIQUE (name)
+    CONSTRAINT room_name_unique UNIQUE (name),
+    CONSTRAINT room_name_length CHECK (length(name) > 3)
 );
 
 ALTER TABLE rooms ENABLE ROW LEVEL SECURITY;
