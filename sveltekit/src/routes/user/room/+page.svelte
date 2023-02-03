@@ -13,7 +13,7 @@
 	<ul class="flex flex-col">
 		{#each data.rooms as room}
 			<li>
-				<Link href={`/user/room/${room.name}`}><span class="capitalize">{room.name}</span></Link>
+				<Link href={`/user/room/${room.name}`}><span>{room.name}</span></Link>
 			</li>
 		{/each}
 	</ul>

@@ -14,10 +14,7 @@ export class RoomService {
 	) {}
 
 	async getRooms() {
-		const { data, error } = await this.supabase
-			.from('rooms')
-			.select('id, name')
-			.eq('host_id', this.session.user.id);
+		const { data, error } = await this.supabase.from('rooms').select('id, name');
 
 		if (error) {
 			console.error(error);
