@@ -23,5 +23,12 @@
 	"files.associations": {
 		"*.sql": "postgres"
 	},
-	"vitest.commandLine": "npx vitest"
+	"vitest.commandLine": "npx vitest",
+	"vitest.exclude": [
+		"**/e2e/**",
+		"**/node_modules/**",
+		"**/dist/**",
+		"**/cypress/**",
+		"**/.{idea,git,cache,output,temp}/**"
+	]
 }
