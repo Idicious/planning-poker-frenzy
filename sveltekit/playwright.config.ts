@@ -8,7 +8,8 @@ const config: PlaywrightTestConfig = {
 	testDir: 'e2e',
 	globalSetup: 'e2e/setup.ts',
 	use: {
-		storageState: 'e2e/BobStorageState.json'
+		storageState: 'e2e/BobStorageState.json',
+		baseURL: 'http://localhost:5173'
 	}
 };
 
