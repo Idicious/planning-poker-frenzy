@@ -5,9 +5,6 @@ const config: PlaywrightTestConfig = {
 		command: 'npm run preview',
 		port: 5173
 	},
-	expect: {
-		toHaveScreenshot: { maxDiffPixels: 100 }
-	},
 	testDir: 'e2e',
 	globalSetup: 'e2e/setup.ts',
 	use: {
