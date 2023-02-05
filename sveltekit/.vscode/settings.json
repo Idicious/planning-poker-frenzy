@@ -22,5 +22,6 @@
 	},
 	"files.associations": {
 		"*.sql": "postgres"
-	}
+	},
+	"vitest.commandLine": "npx vitest"
 }
