@@ -14,3 +14,5 @@ e2e/storageState.json
 pnpm-lock.yaml
 package-lock.json
 yarn.lock
+
+src/lib/generated-db-types.ts

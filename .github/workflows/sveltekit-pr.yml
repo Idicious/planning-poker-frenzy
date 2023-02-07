@@ -1,11 +1,9 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Sveltekit CI
+name: Sveltekit PR
 
 on:
-  push:
-    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -16,6 +14,16 @@ concurrency:
 defaults:
   run:
     working-directory: ./sveltekit
+
+env:
+  PUBLIC_SUPABASE_ANON_KEY: mock_key
+  PUBLIC_SUPABASE_URL: http://mock_url
+  IMAGEKIT_PUBLIC_KEY: imagekit_pub
+  IMAGEKIT_PRIVATE_KEY: imagekit_priv
+  IMAGEKIT_URL_ENDPOINT: imagekit_endpoint
+  SUPABASE_GITHUB_CLIENT_ID: "client_id"
+  SUPABASE_GITHUB_SECRET: "secret"
+  SUPABASE_GITHUB_REDIRECT_URI: "http://localhost:5173"
 
 jobs:
   lint:
@@ -35,12 +43,6 @@ jobs:
         uses: ./.github/actions/sveltekit-setup
       - name: Check application for errors
         run: pnpm check
-        env:
-          PUBLIC_SUPABASE_ANON_KEY: mock_key
-          PUBLIC_SUPABASE_URL: http://mock_url
-          IMAGEKIT_PUBLIC_KEY: imagekit_pub
-          IMAGEKIT_PRIVATE_KEY: imagekit_priv
-          IMAGEKIT_URL_ENDPOINT: imagekit_endpoint
 
   test:
     runs-on: ubuntu-latest
@@ -50,36 +52,48 @@ jobs:
         uses: ./.github/actions/sveltekit-setup
       - name: Run unit tests
         run: pnpm test:coverage
-        env:
-          PUBLIC_SUPABASE_ANON_KEY: mock_key
-          PUBLIC_SUPABASE_URL: http://mock_url
-          IMAGEKIT_PUBLIC_KEY: imagekit_pub
-          IMAGEKIT_PRIVATE_KEY: imagekit_priv
-          IMAGEKIT_URL_ENDPOINT: imagekit_endpoint
 
   e2e:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: SvelteKit setup
+        uses: ./.github/actions/sveltekit-setup
       - uses: supabase/setup-cli@v1
         with:
           version: 1.27.8
-      - name: SvelteKit setup
-        uses: ./.github/actions/sveltekit-setup
-      - name: Install playwright dependencies
-        run: pnpm exec playwright install --with-deps chromium
       - name: Prepare database
-        run: |
-          pnpm supabase start
-          pnpm db:seed
+        run: supabase start -x migra,studio
+      - name: Seed database
+        run: pnpm db:seed
         env:
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      - name: Install playwright dependencies
+        run: pnpm exec playwright install --with-deps chromium
       - name: Run playwright tests
-        run: pnpm playwright test --browser chromium
+        run: pnpm test:e2e:ci
         env:
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
           IMAGEKIT_PUBLIC_KEY: ${{ secrets.IMAGEKIT_PUBLIC_KEY }}
           IMAGEKIT_PRIVATE_KEY: ${{ secrets.IMAGEKIT_PRIVATE_KEY }}
           IMAGEKIT_URL_ENDPOINT: ${{ secrets.IMAGEKIT_URL_ENDPOINT }}
+
+  validate_generated_types:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 1.27.8
+      - name: Prepare database
+        run: supabase db start
+      - name: Verify generated types match Postgres schema
+        run: |
+          supabase gen types typescript --local > src/lib/generated-db-types.ts
+          if ! git diff --ignore-space-at-eol --exit-code --quiet src/lib/generated-db-types.ts; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff
+            exit 1
+          fi

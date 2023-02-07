@@ -28,7 +28,7 @@ describe('ProfileService', () => {
 	test('getProfile returns profile on success', async () => {
 		mockServer.use(
 			rest.get(/\/profiles/, (_, res, ctx) => {
-				return res.once(ctx.status(200), ctx.json({ id: '1' }));
+				return res.once(ctx.json({ id: '1' }));
 			})
 		);
 
@@ -39,11 +39,11 @@ describe('ProfileService', () => {
 	test('getProfile throws a generic error when supabase request fails', async () => {
 		mockServer.use(
 			rest.get(/\/profiles/, (_, res, ctx) => {
-				return res.once(ctx.status(500, 'supabase error'));
+				return res.once(ctx.status(500), ctx.json({ message: 'supabase error' }));
 			})
 		);
 
-		expect(() => profileService.getProfile()).rejects.toThrow(
+		await expect(() => profileService.getProfile()).rejects.toThrow(
 			expect.objectContaining(error(500, 'Error fetching profile'))
 		);
 	});

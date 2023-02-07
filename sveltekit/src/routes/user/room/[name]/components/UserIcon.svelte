@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resizeImage } from '$lib/images/utils';
 	import type { OnlineUser } from '$lib/stores/online-users';
 	import { userIconPositionStore } from '$lib/stores/user-icon-positions';
 	import { fade, fly } from 'svelte/transition';
@@ -48,7 +49,11 @@
 	</figcaption>
 
 	{#if user.avatarUrl}
-		<img src={user.avatarUrl} alt="user-avatar" class="rounded-full w-14 h-14" />
+		<img
+			src={resizeImage(user.avatarUrl, 256, 256)}
+			alt="user-avatar"
+			class="rounded-full w-14 h-14"
+		/>
 	{:else}
 		<span>{userAbbreviation}</span>
 	{/if}

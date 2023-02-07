@@ -99,13 +99,16 @@ function configureChannel(
 }
 
 function presenceStateToUsers(presenceState: RealtimePresenceState) {
-	return Object.entries(presenceState).map(([key, [state]]) => ({
-		username: key,
-		presence_ref: state.presence_ref ?? null,
-		vote: state.vote ?? null,
-		avatarUrl: state.avatarUrl ?? null,
-		joined: new Date(state.joined)
-	})) as OnlineUser[];
+	return Object.entries(presenceState).map(([key, [state]]) => {
+		const userState = state as OnlineUser;
+		return {
+			username: key,
+			presence_ref: state.presence_ref ?? null,
+			vote: userState.vote ?? null,
+			avatarUrl: userState.avatarUrl ?? null,
+			joined: new Date(userState.joined)
+		};
+	}) as OnlineUser[];
 }
 
 function getFirstJoinedUser(onlineUsers: OnlineUser[]) {

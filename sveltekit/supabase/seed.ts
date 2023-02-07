@@ -13,22 +13,37 @@ if (supabaseUrl == null || supabaseKey == null) {
 
 const client = createClient<Database>(supabaseUrl, supabaseKey);
 
+const users = ['Bob', 'Alice', 'user'];
+
 async function seed() {
+	for (const user of users) {
+		await createUser(user);
+	}
+}
+
+async function createUser(name: string) {
 	// Insert default user
 	const { error: defaultUserError, data: defaultUser } = await client.auth.admin.createUser({
-		email: 'user@localhost.dev',
+		email: `${name}@localhost.dev`,
 		password: 'password',
 		email_confirm: true
 	});
 
 	if (defaultUserError) throw defaultUserError;
 
-	// Insert user profile
+	// Update user profile
 	const { error: profileError } = await client
 		.from('profiles')
-		.insert({ id: defaultUser.user.id, username: 'user', website: 'https://localhost.dev' });
+		.upsert({ id: defaultUser.user.id, username: name, website: `https://${name}.localhost.dev` });
 
 	if (profileError) throw profileError;
+
+	// Insert room
+	const { error: roomError } = await client
+		.from('rooms')
+		.insert({ host_id: defaultUser.user.id, name: `${name}\`s Room` });
+
+	if (roomError) throw roomError;
 }
 
 try {

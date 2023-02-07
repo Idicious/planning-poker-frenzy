@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Card from '$lib/components/layout/Card.svelte';
 	import { createOnlineUsersStore } from '$lib/stores/online-users';
 	import { onDestroy } from 'svelte';
@@ -10,10 +9,10 @@
 
 	export let data: PageData;
 
-	const username = data.session?.user.email ?? 'Anonymous';
+	const username = data.session.user.email ?? 'Anonymous';
 
 	const { votesRevealed, leave, currentVote, onlineUsers, setVote, revealVotes, host } =
-		createOnlineUsersStore($page.params.id, username, data.avatar_url);
+		createOnlineUsersStore(data.room.id, username, data.avatarUrl);
 
 	onDestroy(() => {
 		leave();
@@ -21,8 +20,21 @@
 </script>
 
 <svelte:head>
-	<title>Room {$page.params.id}</title>
+	<title>Room {data.room.name}</title>
 </svelte:head>
+
+<aside class="absolute left-0 top-0 md:w-80 w-full bg-white h-full p-3 z-100">
+	<section class="flex flex-col">
+		<h1 class="text-lg font-bold">Polls</h1>
+		<ul class="flex flex-col">
+			{#each data.room.polls as poll}
+				<li>
+					<a href="/poll">{poll.description}</a>
+				</li>
+			{/each}
+		</ul>
+	</section>
+</aside>
 
 <Card>
 	<UserList users={$onlineUsers} />

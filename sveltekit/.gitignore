@@ -8,4 +8,4 @@ coverage
 .env
 .env.*
 !.env.example
-e2e/storageState.json
+e2e/*StorageState.json

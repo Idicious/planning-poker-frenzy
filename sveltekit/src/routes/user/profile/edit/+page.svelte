@@ -6,6 +6,7 @@
 	import Card from '$lib/components/layout/Card.svelte';
 	import { applyFormActionResponse, applyFormErrorResponse } from '$lib/forms/actions';
 	import { createImageStore } from '$lib/forms/images';
+	import { resizeImage } from '$lib/images/utils';
 	import {
 		ProfileDTOSchema,
 		USERNAME_MAX_LENGTH,
@@ -30,7 +31,7 @@
 		onError: applyFormErrorResponse
 	});
 
-	$: initialValues = form?.data ?? data.profile;
+	$: initialValues = form?.formData ?? data.profile;
 	$: errors = form?.errors ?? $clientErrors;
 	$: selectedImage = $formData.avatar;
 
@@ -46,7 +47,7 @@
 
 <Card>
 	<img
-		src={$imageStore ?? data.profile.avatar_url}
+		src={$imageStore ?? resizeImage(data.profile.avatar_url, 256, 256)}
 		alt="profile_picture"
 		class="w-64 h-64 rounded-full object-cover mx-auto"
 	/>

@@ -57,3 +57,9 @@ enable_signup = true
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
 enable_confirmations = false
+
+[auth.external.github]
+enabled = true
+client_id = "env(SUPABASE_GITHUB_CLIENT_ID)"
+secret = "env(SUPABASE_GITHUB_SECRET)"
+redirect_uri = "env(SUPABASE_GITHUB_REDIRECT_URI)"
