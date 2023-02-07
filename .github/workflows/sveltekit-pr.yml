@@ -71,10 +71,8 @@ jobs:
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
       - name: Install playwright dependencies
         run: pnpm exec playwright install --with-deps chromium
-      - name: Build app
-        run: pnpm build
       - name: Run playwright tests
-        run: pnpm playwright test --browser chromium
+        run: pnpm test:e2e:ci
         env:
           PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.PUBLIC_SUPABASE_ANON_KEY }}
           PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
