@@ -17,7 +17,7 @@ defaults:
 
 env:
   SUPABASE_ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-  SUPABASE_DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
   PROJECT_ID: ${{ secrets.PROJECT_ID }}
   SUPABASE_GITHUB_CLIENT_ID: "client_id"
   SUPABASE_GITHUB_SECRET: "secret"
