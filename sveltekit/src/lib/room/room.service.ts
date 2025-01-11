@@ -1,72 +1,45 @@
 import { Tokens } from '$lib/di-tokens';
-import type { Database } from '$lib/generated-db-types';
-import type { Session, SupabaseClient } from '@supabase/supabase-js';
+import { PrismaClient } from '@prisma/client';
+import type { Session } from '@supabase/supabase-js';
 import { inject, injectable } from 'inversify';
 import type { CreateRoomDTO } from './schemas';
-import { error as httpError } from '@sveltejs/kit';
-import { ensureArray } from '../db-types';
 
 @injectable()
 export class RoomService {
 	constructor(
-		@inject(Tokens.Supabase) private supabase: SupabaseClient<Database>,
-		@inject(Tokens.Session) private session: Session
+		@inject(Tokens.Session) private session: Session,
+		@inject(Tokens.PrismaClient) private prisma: PrismaClient
 	) {}
 
 	async getRooms() {
-		const { data, error } = await this.supabase.from('rooms').select('id, name');
-
-		if (error) {
-			console.error(error);
-			throw httpError(500, 'Internal Server Error');
-		}
-
-		return data;
+		return this.prisma.room.findMany({
+			select: { id: true, name: true, polls: true }
+		});
 	}
 
 	async getRoom(name: string) {
-		const { data, error } = await this.supabase
-			.from('rooms')
-			.select('*, polls(*)')
-			.eq('name', name)
-			.maybeSingle();
-
-		if (error) {
-			console.error(error);
-			throw httpError(500, 'Internal Server Error');
-		}
-
-		if (data == null) return null;
-		return ensureArray(data, ['polls']);
+		return this.prisma.room.findUnique({
+			where: { name },
+			include: {
+				polls: true
+			}
+		});
 	}
 
 	async createRoom({ name }: CreateRoomDTO) {
-		const { data, error } = await this.supabase
-			.from('rooms')
-			.insert({ name, host_id: this.session.user.id })
-			.select('*')
-			.single();
-
-		if (error) {
-			console.error(error);
-			throw httpError(500, 'Internal Server Error');
-		}
-
-		return data;
+		return this.prisma.room.create({
+			data: {
+				name,
+				host_id: this.session.user.id
+			}
+		});
 	}
 
 	async roomExists(name: string) {
-		const { error, data } = await this.supabase
-			.from('rooms')
-			.select('name')
-			.eq('name', name)
-			.maybeSingle();
+		const room = await this.prisma.room.findUnique({
+			where: { name }
+		});
 
-		if (error) {
-			console.error(error);
-			throw httpError(500, 'Internal Server Error');
-		}
-
-		return data != null;
+		return room != null;
 	}
 }

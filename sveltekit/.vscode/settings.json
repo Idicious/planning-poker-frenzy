@@ -17,6 +17,9 @@
 	"[svelte]": {
 		"editor.defaultFormatter": "svelte.svelte-vscode"
 	},
+	"[prisma]": {
+		"editor.defaultFormatter": "Prisma.prisma"
+	},
 	"[postgres]": {
 		"editor.defaultFormatter": "bradymholt.pgformatter"
 	},
@@ -30,5 +33,6 @@
 		"**/dist/**",
 		"**/cypress/**",
 		"**/.{idea,git,cache,output,temp}/**"
-	]
+	],
+	"prisma.fileWatcher": true
 }

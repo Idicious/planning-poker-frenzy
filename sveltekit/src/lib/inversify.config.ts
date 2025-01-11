@@ -1,3 +1,4 @@
+import { PrismaClient } from '@prisma/client';
 import { ContainerModule } from 'inversify';
 import { AuthService } from './auth/auth.service';
 import { Tokens } from './di-tokens';
@@ -6,10 +7,14 @@ import { imageKitConfig } from './profile/imagekit.config';
 import { ProfileService } from './profile/profile.service';
 import { RoomService } from './room/room.service';
 
+const prisma = new PrismaClient();
+
 export const appContainer = new ContainerModule((bind) => {
 	bind(ProfileService).toSelf().inRequestScope();
 	bind(ImageService).toSelf().inRequestScope();
 	bind(AuthService).toSelf().inRequestScope();
 	bind(RoomService).toSelf().inRequestScope();
+
+	bind(Tokens.PrismaClient).toConstantValue(prisma);
 	bind(Tokens.ImageKitConfig).toConstantValue(imageKitConfig);
 });

@@ -5,6 +5,7 @@ specifiers:
   '@fortawesome/free-brands-svg-icons': ^6.2.1
   '@fortawesome/free-solid-svg-icons': ^6.2.1
   '@playwright/test': 1.29.1
+  '@prisma/client': ^4.11.0
   '@supabase/auth-helpers-sveltekit': ^0.8.6
   '@supabase/supabase-js': 2.4.1
   '@sveltejs/adapter-vercel': ^1.0.0
@@ -32,6 +33,7 @@ specifiers:
   postcss: ^8.4.18
   prettier: ^2.8.1
   prettier-plugin-svelte: ^2.9.0
+  prisma: ^4.11.0
   reflect-metadata: ^0.1.13
   sharp: ^0.31.2
   supabase: ^1.27.8
@@ -46,6 +48,7 @@ specifiers:
   typescript: ^4.9.4
   vite: ^4.0.3
   vitest: ^0.26.2
+  vitest-mock-extended: ^1.0.9
   web-vitals: ^3.1.0
   zod: ^3.20.2
 
@@ -53,6 +56,7 @@ dependencies:
   '@felte/validator-zod': 1.0.12_zod@3.20.2
   '@fortawesome/free-brands-svg-icons': 6.2.1
   '@fortawesome/free-solid-svg-icons': 6.2.1
+  '@prisma/client': 4.11.0_prisma@4.11.0
   '@supabase/auth-helpers-sveltekit': 0.8.6_l3gewy5tlkgvrrn24rowenxrli
   '@supabase/supabase-js': 2.4.1
   '@vercel/analytics': 0.1.6
@@ -60,6 +64,7 @@ dependencies:
   imagekit: 4.1.2
   inversify: 6.0.1
   lodash-es: 4.17.21
+  prisma: 4.11.0
   reflect-metadata: 0.1.13
   sharp: 0.31.3
   svelte-fa: 3.0.3
@@ -99,6 +104,7 @@ devDependencies:
   typescript: 4.9.4
   vite: 4.0.3_@types+node@18.11.18
   vitest: 0.26.2_happy-dom@8.1.1
+  vitest-mock-extended: 1.0.9_yssb7vqhauhenai3wxvogrlu2u
 
 packages:
 
@@ -535,6 +541,29 @@ packages:
   /@polka/url/1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
+
+  /@prisma/client/4.11.0_prisma@4.11.0:
+    resolution: {integrity: sha512-0INHYkQIqgAjrt7NzhYpeDQi8x3Nvylc2uDngKyFDDj1tTRQ4uV1HnVmd1sQEraeVAN63SOK0dgCKQHlvjL0KA==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.11.0-57.8fde8fef4033376662cad983758335009d522acb
+      prisma: 4.11.0
+    dev: false
+
+  /@prisma/engines-version/4.11.0-57.8fde8fef4033376662cad983758335009d522acb:
+    resolution: {integrity: sha512-3Vd8Qq06d5xD8Ch5WauWcUUrsVPdMC6Ge8ILji8RFfyhUpqon6qSyGM0apvr1O8n8qH8cKkEFqRPsYjuz5r83g==}
+    dev: false
+
+  /@prisma/engines/4.11.0:
+    resolution: {integrity: sha512-0AEBi2HXGV02cf6ASsBPhfsVIbVSDC9nbQed4iiY5eHttW9ZtMxHThuKZE1pnESbr8HRdgmFSa/Kn4OSNYuibg==}
+    requiresBuild: true
+    dev: false
 
   /@rollup/pluginutils/4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
@@ -3277,6 +3306,15 @@ packages:
       react-is: 17.0.2
     dev: true
 
+  /prisma/4.11.0:
+    resolution: {integrity: sha512-4zZmBXssPUEiX+GeL0MUq/Yyie4ltiKmGu7jCJFnYMamNrrulTBc+D+QwAQSJ01tyzeGHlD13kOnqPwRipnlNw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 4.11.0
+    dev: false
+
   /pump/3.0.0:
     resolution: {integrity: sha512-LwZy+p3SFs1Pytd/jYct4wpv49HiYCqd9Rlc5ZVdk0V+8Yzv6jR5Blk3TRmPL1ft69TxP0IMZGJ+WPFU2BFhww==}
     dependencies:
@@ -3972,6 +4010,14 @@ packages:
   /tr46/0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
 
+  /ts-essentials/9.3.1_typescript@4.9.4:
+    resolution: {integrity: sha512-9CChSvQMyVRo29Vb1A2jbs+LKo3d/bAf+ndSaX0T8cEiy/HChVaRN/HY5DqUryZ8hZ6uol9bEgCnGmnDbwBR9Q==}
+    peerDependencies:
+      typescript: '>=4.1.0'
+    dependencies:
+      typescript: 4.9.4
+    dev: true
+
   /ts-node/10.9.1_awa2wsr5thmg3i7jqycphctjfq:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
@@ -4204,6 +4250,17 @@ packages:
         optional: true
     dependencies:
       vite: 4.0.3_@types+node@18.11.18
+    dev: true
+
+  /vitest-mock-extended/1.0.9_yssb7vqhauhenai3wxvogrlu2u:
+    resolution: {integrity: sha512-avWOwla4xsubFUbL1O2Zvqn8xUucQWai05ryywfhjUIthkjJKk01g5/s4SrjTHZXGZ2/h6NfF51FJ3voix1OAw==}
+    peerDependencies:
+      typescript: 3.x || 4.x
+      vitest: '>=0.26.2'
+    dependencies:
+      ts-essentials: 9.3.1_typescript@4.9.4
+      typescript: 4.9.4
+      vitest: 0.26.2_happy-dom@8.1.1
     dev: true
 
   /vitest/0.25.8_happy-dom@8.1.1:
